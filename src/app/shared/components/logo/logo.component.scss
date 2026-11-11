@@ -1,0 +1,9 @@
+:host {
+  color: var(--color-brand-accent);
+  display: inline-flex;
+}
+
+:host svg {
+  width: var(--logo-size, 32px);
+  height: auto;
+}
