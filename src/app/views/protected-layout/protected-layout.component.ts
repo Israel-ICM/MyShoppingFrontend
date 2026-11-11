@@ -7,7 +7,7 @@ import { LogoComponent } from '../../shared/components/logo/logo.component';
 interface NavItem {
   label: string;
   path: string;
-  icon: 'dashboard' | 'compras' | 'inventario' | 'pedidos' | 'reportes' | 'usuarios';
+  icon: 'dashboard' | 'productos' | 'compras' | 'inventario' | 'pedidos' | 'reportes' | 'usuarios';
 }
 
 /** Shell del área autenticada: sidebar de navegación + topbar + contenido ruteado. */
@@ -25,6 +25,7 @@ export class ProtectedLayoutComponent {
 
   protected readonly navItems: NavItem[] = [
     { label: 'Dashboard', path: '/', icon: 'dashboard' },
+    { label: 'Productos', path: '/productos', icon: 'productos' },
     { label: 'Compras', path: '/compras', icon: 'compras' },
     { label: 'Inventario', path: '/inventario', icon: 'inventario' },
     { label: 'Pedidos', path: '/pedidos', icon: 'pedidos' },

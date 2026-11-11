@@ -1,0 +1,53 @@
+<section class="product-detail-panel">
+  <a class="product-detail__back" routerLink="/productos">&larr; Volver al catálogo</a>
+
+  @if (loading()) {
+    <p class="product-detail__state">Cargando producto…</p>
+  } @else if (error()) {
+    <p class="product-detail__state product-detail__state--error">{{ error() }}</p>
+  } @else {
+    @if (producto(); as producto) {
+      <div class="product-detail__header">
+        <div>
+          <h2 class="product-detail__name">{{ producto.nombre }}</h2>
+          <p class="product-detail__code">Código: {{ producto.codigo }}</p>
+        </div>
+        <div class="product-detail__actions">
+          <a class="product-detail__edit" [routerLink]="['/productos', producto.id, 'editar']">Editar</a>
+          <button type="button" class="product-detail__delete" [disabled]="deleting()" (click)="eliminar()">
+            {{ deleting() ? 'Eliminando…' : 'Eliminar' }}
+          </button>
+        </div>
+      </div>
+
+      @if (actionError()) {
+        <p class="product-detail__state product-detail__state--error" role="alert">{{ actionError() }}</p>
+      }
+
+      <dl class="product-detail__fields">
+        <dt>Marca</dt>
+        <dd>{{ marcaNombre(producto.marca) }}</dd>
+
+        <dt>Categorías</dt>
+        <dd>{{ nombresCategorias(producto.categorias) }}</dd>
+
+        <dt>Precio</dt>
+        <dd>Bs. {{ producto.precio }}</dd>
+
+        <dt>Costo</dt>
+        <dd>Bs. {{ producto.costo }}</dd>
+
+        <dt>Stock</dt>
+        <dd>{{ producto.stock }}</dd>
+
+        <dt>Peso</dt>
+        <dd>{{ producto.peso }} kg</dd>
+
+        <dt>Estado</dt>
+        <dd>{{ producto.activo ? 'Activo' : 'Inactivo' }}</dd>
+      </dl>
+
+      <p class="product-detail__description">{{ producto.descripcion }}</p>
+    }
+  }
+</section>

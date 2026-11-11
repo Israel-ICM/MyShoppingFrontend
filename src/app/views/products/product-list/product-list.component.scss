@@ -1,0 +1,101 @@
+.product-list-panel {
+  padding: var(--space-6);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface-glass);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  box-shadow: var(--shadow-sm);
+}
+
+@supports not (backdrop-filter: blur(1px)) {
+  .product-list-panel {
+    background: var(--color-surface);
+  }
+}
+
+.product-list__filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+}
+
+.product-list__add {
+  margin-left: auto;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-pill);
+  background: var(--color-brand);
+  color: var(--color-text-on-brand);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  text-decoration: none;
+  transition: background 200ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    background: var(--color-brand-pressed);
+  }
+}
+
+.product-list__state {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-family: var(--font-sans);
+}
+
+.product-list__state--error {
+  color: var(--color-danger);
+}
+
+.product-list__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--space-4);
+}
+
+.product-card {
+  display: block;
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+  text-decoration: none;
+  transition: box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1),
+    transform 200ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+}
+
+.product-card__name {
+  margin: 0 0 var(--space-1);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+}
+
+.product-card__brand {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.product-card__price {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-brand-accent);
+}
+
+.product-card__stock {
+  margin: var(--space-1) 0 0;
+  font-family: var(--font-sans);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+}

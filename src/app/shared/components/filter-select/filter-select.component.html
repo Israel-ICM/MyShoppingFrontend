@@ -1,0 +1,33 @@
+<button
+  type="button"
+  class="filter-select__trigger"
+  [class.filter-select__trigger--open]="open()"
+  [class.filter-select__trigger--has-value]="selectedId() !== null"
+  (click)="toggle()"
+>
+  <span>{{ selectedLabel() }}</span>
+  <svg viewBox="0 0 12 12" fill="none" aria-hidden="true">
+    <path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+  </svg>
+</button>
+
+@if (open()) {
+  <ul class="filter-select__options">
+    <li
+      class="filter-select__option"
+      [class.filter-select__option--selected]="selectedId() === null"
+      (click)="select(null)"
+    >
+      {{ placeholder }}
+    </li>
+    @for (option of options; track option.id) {
+      <li
+        class="filter-select__option"
+        [class.filter-select__option--selected]="selectedId() === option.id"
+        (click)="select(option.id)"
+      >
+        {{ option.nombre }}
+      </li>
+    }
+  </ul>
+}

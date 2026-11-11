@@ -20,6 +20,34 @@ export const routes: Routes = [
           import('./views/dashboard/dashboard.component').then((m) => m.DashboardComponent),
       },
       {
+        path: 'productos',
+        loadComponent: () =>
+          import('./views/products/product-list/product-list.component').then(
+            (m) => m.ProductListComponent,
+          ),
+      },
+      {
+        path: 'productos/nuevo',
+        loadComponent: () =>
+          import('./views/products/product-form/product-form.component').then(
+            (m) => m.ProductFormComponent,
+          ),
+      },
+      {
+        path: 'productos/:id',
+        loadComponent: () =>
+          import('./views/products/product-detail/product-detail.component').then(
+            (m) => m.ProductDetailComponent,
+          ),
+      },
+      {
+        path: 'productos/:id/editar',
+        loadComponent: () =>
+          import('./views/products/product-form/product-form.component').then(
+            (m) => m.ProductFormComponent,
+          ),
+      },
+      {
         path: 'compras',
         data: { title: 'Compras' },
         loadComponent: () =>

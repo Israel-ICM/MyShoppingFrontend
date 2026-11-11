@@ -1,0 +1,34 @@
+<section class="product-list-panel">
+  <div class="product-list__filters">
+    <app-filter-select
+      [options]="categorias()"
+      placeholder="Todas las categorías"
+      (valueChange)="onCategoriaChange($event)"
+    />
+    <app-filter-select
+      [options]="marcas()"
+      placeholder="Todas las marcas"
+      (valueChange)="onMarcaChange($event)"
+    />
+    <a class="product-list__add" routerLink="/productos/nuevo">+ Agregar producto</a>
+  </div>
+
+  @if (loading()) {
+    <p class="product-list__state">Cargando productos…</p>
+  } @else if (error()) {
+    <p class="product-list__state product-list__state--error">{{ error() }}</p>
+  } @else if (productos().length === 0) {
+    <p class="product-list__state">No hay productos para este filtro.</p>
+  } @else {
+    <div class="product-list__grid">
+      @for (producto of productos(); track producto.id) {
+        <a class="product-card" [routerLink]="['/productos', producto.id]">
+          <h3 class="product-card__name">{{ producto.nombre }}</h3>
+          <p class="product-card__brand">{{ marcaNombre(producto.marca) }}</p>
+          <p class="product-card__price">Bs. {{ producto.precio }}</p>
+          <p class="product-card__stock">Stock: {{ producto.stock }}</p>
+        </a>
+      }
+    </div>
+  }
+</section>
