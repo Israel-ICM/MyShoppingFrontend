@@ -21,17 +21,14 @@
   }
 }
 
-.login-wrapper {
+.login-card {
   position: relative;
   z-index: 1;
-  width: 100%;
-  max-width: 420px;
-}
-
-.login-card {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
+  max-width: 420px;
   padding: var(--space-8) var(--space-6) var(--space-6);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
@@ -40,7 +37,6 @@
   -webkit-backdrop-filter: blur(var(--glass-blur));
 }
 
-// Fallback for browsers without backdrop-filter support: solid, non-translucent surface.
 @supports not (backdrop-filter: blur(1px)) {
   .login-card {
     background: var(--color-surface);
@@ -146,7 +142,8 @@
   background: none;
   color: var(--color-text-muted);
   cursor: pointer;
-  transition: color 150ms cubic-bezier(0.4, 0, 0.2, 1), background 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  transition: color 150ms cubic-bezier(0.4, 0, 0.2, 1), background 150ms cubic-bezier(0.4, 0, 0.2, 1),
+    transform 150ms cubic-bezier(0.34, 1.56, 0.64, 1);
 
   svg {
     width: 17px;
@@ -156,6 +153,10 @@
   &:hover {
     color: var(--color-brand-accent);
     background: var(--color-brand-alpha);
+  }
+
+  &:active {
+    transform: scale(0.88);
   }
 }
 
@@ -203,7 +204,7 @@
   letter-spacing: 0.5px;
   cursor: pointer;
   transition: background 200ms cubic-bezier(0.4, 0, 0.2, 1),
-    transform 200ms cubic-bezier(0.4, 0, 0.2, 1),
+    transform 150ms cubic-bezier(0.34, 1.56, 0.64, 1),
     box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1);
 
   &:hover:not(:disabled) {
@@ -213,7 +214,7 @@
   }
 
   &:active:not(:disabled) {
-    transform: translateY(0);
+    transform: scale(0.96);
     box-shadow: none;
   }
 
@@ -230,7 +231,7 @@
 .login-form__spinner {
   width: 14px;
   height: 14px;
-  border: 2px solid color-mix(in srgb, var(--color-text-on-brand) 50%, transparent);
+  border: 2px solid rgba(255, 255, 255, 0.5);
   border-top-color: transparent;
   border-radius: var(--radius-pill);
   animation: login-form-spin 700ms linear infinite;
@@ -279,7 +280,7 @@
   box-shadow: var(--shadow-sm);
   cursor: pointer;
   transition: background 150ms cubic-bezier(0.4, 0, 0.2, 1), color 150ms cubic-bezier(0.4, 0, 0.2, 1),
-    border-color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    border-color 150ms cubic-bezier(0.4, 0, 0.2, 1), transform 150ms cubic-bezier(0.34, 1.56, 0.64, 1);
 
   svg {
     width: 18px;
@@ -290,6 +291,10 @@
     color: var(--color-brand-accent);
     background: var(--color-brand-alpha);
     border-color: var(--color-brand-accent);
+  }
+
+  &:active {
+    transform: scale(0.88);
   }
 }
 

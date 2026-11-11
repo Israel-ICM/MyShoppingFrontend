@@ -17,9 +17,37 @@ export const routes: Routes = [
       {
         path: '',
         loadComponent: () =>
-          import('./views/dashboard/dashboard-placeholder.component').then(
-            (m) => m.DashboardPlaceholderComponent,
-          ),
+          import('./views/dashboard/dashboard.component').then((m) => m.DashboardComponent),
+      },
+      {
+        path: 'compras',
+        data: { title: 'Compras' },
+        loadComponent: () =>
+          import('./views/placeholder/placeholder.component').then((m) => m.PlaceholderComponent),
+      },
+      {
+        path: 'inventario',
+        data: { title: 'Inventario' },
+        loadComponent: () =>
+          import('./views/placeholder/placeholder.component').then((m) => m.PlaceholderComponent),
+      },
+      {
+        path: 'pedidos',
+        data: { title: 'Pedidos' },
+        loadComponent: () =>
+          import('./views/placeholder/placeholder.component').then((m) => m.PlaceholderComponent),
+      },
+      {
+        path: 'usuarios',
+        data: { title: 'Usuarios' },
+        loadComponent: () =>
+          import('./views/placeholder/placeholder.component').then((m) => m.PlaceholderComponent),
+      },
+      {
+        path: 'reportes',
+        data: { title: 'Reportes' },
+        loadComponent: () =>
+          import('./views/placeholder/placeholder.component').then((m) => m.PlaceholderComponent),
       },
     ],
   },

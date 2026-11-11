@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, catchError, map, tap, throwError } from 'rxjs';
+import { Observable, catchError, map, of, tap, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { JwtPayload } from '../models/jwt-payload.model';
 import { AuthTokens, RefreshResponse } from '../models/tokens.model';
@@ -23,6 +23,16 @@ export class AuthService {
   private readonly accessToken = signal<string | null>(this.hydrateAccessToken());
 
   readonly isAuthenticated = computed(() => !!this.accessToken());
+
+  /** `username` del claim del JWT si el backend lo expone; el token actual no trae roles. */
+  readonly username = computed(() => {
+    const token = this.accessToken();
+    if (!token) {
+      return null;
+    }
+    const claim = this.decodeAccessToken(token)?.['username'];
+    return typeof claim === 'string' ? claim : null;
+  });
 
   login(username: string, password: string): Observable<void> {
     return this.http
@@ -52,9 +62,34 @@ export class AuthService {
   }
 
   logout(): void {
+    this.clearSession();
+    this.router.navigate(['/login']);
+  }
+
+  /**
+   * Resuelve si hay sesión utilizable, intentando un refresh silencioso cuando el access
+   * token ya venció (5 min) pero el refresh token (1 día) todavía es válido. Sin esto, recargar
+   * la página después de 5 minutos mandaba al usuario a /login aunque su sesión siguiera viva.
+   */
+  ensureSession(): Observable<boolean> {
+    if (this.isAuthenticated()) {
+      return of(true);
+    }
+    if (!this.tokenStorage.getRefresh()) {
+      return of(false);
+    }
+    return this.refresh().pipe(
+      map(() => true),
+      catchError(() => {
+        this.clearSession();
+        return of(false);
+      }),
+    );
+  }
+
+  private clearSession(): void {
     this.tokenStorage.clear();
     this.accessToken.set(null);
-    this.router.navigate(['/login']);
   }
 
   private toLoginError(error: HttpErrorResponse): Error {

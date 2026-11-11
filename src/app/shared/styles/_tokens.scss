@@ -1,15 +1,4 @@
-// Design tokens: auth-foundation (sdd/auth-foundation/design).
-// Paleta de marca migrada 1:1 desde el proyecto anterior (D:\xampp8.2\htdocs\myshopping\css),
-// no recalculada matemáticamente. Fuente: styles.css / admin-dashboard.css / admin-login.css.
-// --color-brand-50/900 son los únicos valores DERIVADOS (ese proyecto no tenía escala de 10 pasos
-// ni fondo con degradé); todo lo demás es el hex exacto que ya estaba en producción.
-// Cascada de tema deliberada (ver doc de diseño):
-// :root (claro) -> @media(prefers-color-scheme: dark) -> [data-theme="dark"] -> [data-theme="light"].
-// Los dos bloques [data-theme] van DESPUÉS del @media para que el override manual gane siempre
-// un empate de especificidad contra la preferencia del sistema operativo.
-
 :root {
-  // Brand palette (base = #be0560, idéntico al --primary histórico).
   --color-brand-50: #f9e6ef;
   --color-brand-100: #fccee6;
   --color-brand-200: #fa9bcf;
@@ -21,7 +10,6 @@
   --color-brand-800: #6d0337;
   --color-brand-900: #220111;
 
-  // Semantic tokens (tema claro, valores reales de --primary/--text-dark/--bg-light/--white).
   --color-bg: #faf5f7;
   --color-bg-gradient-start: #ffffff;
   --color-bg-gradient-end: var(--color-brand-50);
@@ -39,28 +27,21 @@
   --color-success-bg: rgba(56, 142, 60, 0.08);
   --color-warning: #e65100;
   --color-info: #1565c0;
-  // Texto/UI sobre superficies --color-brand (ej. botón de submit). Theme-invariant:
-  // --color-brand ya rinde AA contra blanco en ambos temas.
   --color-text-on-brand: #ffffff;
-  // Hover/press de botones primarios y su resplandor de sombra. Legacy no redefinía el oscurecido
-  // por tema (siempre --primary-dark), solo el resplandor cambia de tono entre temas.
   --color-brand-pressed: #8e0448;
   --color-brand-glow: rgba(190, 5, 96, 0.35);
   --color-brand-alpha-strong: rgba(190, 5, 96, 0.15);
 
-  // Radii (iOS-style, generosamente redondeado).
   --radius-sm: 8px;
   --radius-md: 14px;
   --radius-lg: 20px;
   --radius-xl: 24px;
   --radius-pill: 999px;
 
-  // Shadows: suaves, difusas, baja opacidad.
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
   --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.1);
   --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.14);
 
-  // Spacing scale (x4/x8).
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -70,7 +51,6 @@
   --space-7: 40px;
   --space-8: 48px;
 
-  // Typography: system stack, sin webfonts.
   --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-size-xs: 0.75rem;
   --font-size-sm: 0.875rem;
@@ -81,8 +61,10 @@
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
 
-  // Glass.
   --glass-blur: 20px;
+
+  --sidebar-w: 260px;
+  --color-sidebar-active: rgba(190, 5, 96, 0.2);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -95,10 +77,6 @@
     --color-text: #f1f1f6;
     --color-text-muted: #9ca3af;
     --color-border: rgba(255, 255, 255, 0.12);
-    // El primario histórico cambia a un tono más claro en oscuro (no más oscuro): contra fondos
-    // casi negros, --color-brand-500 base solo da ~2.9:1. Este es el --primary real que ya
-    // usaban admin-dashboard.css/admin-login.css en modo oscuro (pasa 3:1 para UI/gráficos,
-    // que es el umbral real para bordes de foco y el logo — no son texto de cuerpo).
     --color-brand: var(--color-brand-600);
     --color-brand-accent: var(--color-brand-600);
     --color-brand-alpha: rgba(233, 26, 135, 0.18);

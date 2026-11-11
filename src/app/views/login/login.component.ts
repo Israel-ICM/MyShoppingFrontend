@@ -9,10 +9,8 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
+import { ThemeService } from '../../core/services/theme.service';
 import { LogoComponent } from '../../shared/components/logo/logo.component';
-
-type Theme = 'light' | 'dark';
-const THEME_STORAGE_KEY = 'myshopping-theme';
 
 /** `required` también falla cuando el valor son solo espacios en blanco (REQ-5.2). */
 function requiredTrimmed(control: AbstractControl<string>): ValidationErrors | null {
@@ -32,11 +30,12 @@ function requiredTrimmed(control: AbstractControl<string>): ValidationErrors | n
 export class LoginComponent {
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly themeService = inject(ThemeService);
 
   readonly loading = signal(false);
   readonly errorMessage = signal<string | null>(null);
   readonly showPassword = signal(false);
-  readonly theme = signal<Theme>(this.readInitialTheme());
+  readonly theme = this.themeService.theme;
 
   readonly form = new FormGroup({
     username: new FormControl('', { nonNullable: true, validators: [requiredTrimmed] }),
@@ -53,22 +52,7 @@ export class LoginComponent {
   }
 
   protected toggleTheme(): void {
-    const next: Theme = this.theme() === 'dark' ? 'light' : 'dark';
-    this.theme.set(next);
-    localStorage.setItem(THEME_STORAGE_KEY, next);
-    document.documentElement.setAttribute('data-theme', next);
-  }
-
-  /** Preferencia guardada por el usuario fuerza el tema; si no hay, se sigue al sistema. */
-  private readInitialTheme(): Theme {
-    const stored = localStorage.getItem(THEME_STORAGE_KEY);
-    if (stored === 'light' || stored === 'dark') {
-      document.documentElement.setAttribute('data-theme', stored);
-      return stored;
-    }
-    const prefersDark = typeof window.matchMedia === 'function'
-      && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    return prefersDark ? 'dark' : 'light';
+    this.themeService.toggle();
   }
 
   onSubmit(): void {

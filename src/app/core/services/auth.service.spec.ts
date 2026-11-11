@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { firstValueFrom } from 'rxjs';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { Router } from '@angular/router';
@@ -173,5 +174,55 @@ describe('AuthService', () => {
     const service = setup(fakeJwt({ exp: Date.now() / 1000 - 3600 }));
 
     expect(service.isAuthenticated()).toBe(false);
+  });
+
+  // Follow-up (reported by the user as "la sesión se muere muy rápido"): a reload after the
+  // short-lived access token (5 min) expires must silently refresh using the still-valid
+  // refresh token (1 day), instead of forcing a logout just because of the reload.
+  describe('ensureSession', () => {
+    it('resolves true immediately when already authenticated, without issuing a request', async () => {
+      const service = setup(fakeJwt({ exp: Date.now() / 1000 + 3600 }));
+
+      const ok = await firstValueFrom(service.ensureSession());
+
+      expect(ok).toBe(true);
+      httpMock.expectNone(`${environment.apiUrl}/token/refresh/`);
+    });
+
+    it('resolves false immediately when there is no access token and no refresh token', async () => {
+      const service = setup();
+      tokenStorage.getRefresh.mockReturnValue(null);
+
+      const ok = await firstValueFrom(service.ensureSession());
+
+      expect(ok).toBe(false);
+      httpMock.expectNone(`${environment.apiUrl}/token/refresh/`);
+    });
+
+    it('attempts a silent refresh when the access token is gone but a refresh token exists, and resolves true on success', async () => {
+      const service = setup();
+      tokenStorage.getRefresh.mockReturnValue('refresh-xyz');
+
+      const resultPromise = firstValueFrom(service.ensureSession());
+
+      const req = httpMock.expectOne(`${environment.apiUrl}/token/refresh/`);
+      req.flush({ access: 'access-new' });
+
+      expect(await resultPromise).toBe(true);
+      expect(service.isAuthenticated()).toBe(true);
+    });
+
+    it('resolves false and clears the session when the silent refresh fails', async () => {
+      const service = setup();
+      tokenStorage.getRefresh.mockReturnValue('refresh-expired');
+
+      const resultPromise = firstValueFrom(service.ensureSession());
+
+      const req = httpMock.expectOne(`${environment.apiUrl}/token/refresh/`);
+      req.flush({ detail: 'token_not_valid' }, { status: 401, statusText: 'Unauthorized' });
+
+      expect(await resultPromise).toBe(false);
+      expect(tokenStorage.clear).toHaveBeenCalled();
+    });
   });
 });

@@ -1,0 +1,40 @@
+<section class="dashboard-panel">
+  @for (stat of stats; track stat.label) {
+    <article class="stat-card">
+      <div class="stat-card__icon" [class]="'stat-card__icon--' + stat.icon">
+        @switch (stat.icon) {
+          @case ('compras') {
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M3 6h18l-1.5 9.5a2 2 0 0 1-2 1.5H6.5a2 2 0 0 1-2-1.5L3 6Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+              <path d="M8 6V5a4 4 0 0 1 8 0v1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+            </svg>
+          }
+          @case ('inventario') {
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M3 9.5 12 4l9 5.5V19a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V9.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+            </svg>
+          }
+          @case ('pedidos') {
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M3 7h11v8H3z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+              <path d="M14 10h4l3 3v2h-7z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+              <circle cx="7" cy="18" r="1.6" stroke="currentColor" stroke-width="1.6" />
+              <circle cx="17" cy="18" r="1.6" stroke="currentColor" stroke-width="1.6" />
+            </svg>
+          }
+          @case ('proveedores') {
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="8" cy="9" r="3" stroke="currentColor" stroke-width="1.6" />
+              <circle cx="16" cy="9" r="3" stroke="currentColor" stroke-width="1.6" />
+              <path d="M2.5 20c.8-3.2 3-5 5.5-5s4.7 1.8 5.5 5M10.5 20c.8-3.2 3-5 5.5-5s4.7 1.8 5.5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+            </svg>
+          }
+        }
+      </div>
+      <div class="stat-card__info">
+        <h3>{{ stat.value }}</h3>
+        <p>{{ stat.label }}</p>
+      </div>
+    </article>
+  }
+</section>
