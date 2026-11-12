@@ -1,0 +1,130 @@
+<section class="inventario-panel">
+  <div class="inventario__header">
+    <h2>Inventario</h2>
+    <button type="button" class="inventario__ajuste-btn" (click)="toggleAjuste()">
+      {{ mostrarAjuste() ? 'Cerrar' : '+ Registrar ajuste' }}
+    </button>
+  </div>
+
+  @if (mostrarAjuste()) {
+    <form class="inventario__ajuste" [formGroup]="ajusteForm" (ngSubmit)="registrarAjuste()" novalidate>
+      @if (erorrAjuste()) {
+        <p class="inventario__error">{{ erorrAjuste() }}</p>
+      }
+      <div class="inventario__ajuste-row">
+        <div class="inventario__field">
+          <label>Producto</label>
+          <app-filter-select [options]="productos()" placeholder="Seleccionar…" formControlName="producto" />
+        </div>
+        <div class="inventario__field">
+          <label>Tipo</label>
+          <app-filter-select [options]="tiposAjuste" placeholder="Seleccionar…" formControlName="tipo" />
+        </div>
+        <div class="inventario__field">
+          <label>Dirección</label>
+          <app-filter-select [options]="direcciones" placeholder="Seleccionar…" formControlName="direccion" />
+        </div>
+        <div class="inventario__field inventario__field--sm">
+          <label>Cantidad</label>
+          <input type="number" min="1" formControlName="cantidad" />
+        </div>
+      </div>
+      <div class="inventario__field">
+        <label>Observación (opcional)</label>
+        <input type="text" formControlName="observacion" placeholder="Motivo del ajuste" />
+      </div>
+      <button type="submit" class="inventario__submit" [disabled]="guardandoAjuste()">
+        {{ guardandoAjuste() ? 'Guardando…' : 'Guardar ajuste' }}
+      </button>
+    </form>
+  }
+
+  <div class="inventario__tabs">
+    <button
+      type="button"
+      class="inventario__tab"
+      [class.inventario__tab--active]="pestana() === 'movimientos'"
+      (click)="cambiarPestana('movimientos')"
+    >
+      Movimientos
+    </button>
+    <button
+      type="button"
+      class="inventario__tab"
+      [class.inventario__tab--active]="pestana() === 'lotes'"
+      (click)="cambiarPestana('lotes')"
+    >
+      Lotes y vencimientos
+    </button>
+  </div>
+
+  @if (pestana() === 'movimientos') {
+    @if (loading()) {
+      <p class="inventario__state">Cargando movimientos…</p>
+    } @else if (error()) {
+      <p class="inventario__state inventario__state--error">{{ error() }}</p>
+    } @else if (movimientos().length === 0) {
+      <p class="inventario__state">Todavía no hay movimientos de stock.</p>
+    } @else {
+      <table class="inventario__table">
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Producto</th>
+            <th>Tipo</th>
+            <th>Cantidad</th>
+            <th>Stock resultante</th>
+            <th>Observación</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (mov of movimientos(); track mov.id) {
+            <tr>
+              <td>{{ mov.creado_en | date: 'dd/MM/yyyy HH:mm' }}</td>
+              <td>{{ mov.producto_nombre }}</td>
+              <td>{{ tipoLabel(mov.tipo) }}</td>
+              <td [class.inventario__cantidad--negativa]="mov.cantidad < 0">
+                {{ mov.cantidad > 0 ? '+' : '' }}{{ mov.cantidad }}
+              </td>
+              <td>{{ mov.stock_resultante }}</td>
+              <td>{{ mov.observacion || '—' }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  } @else {
+    @if (lotes().length === 0) {
+      <p class="inventario__state">Todavía no hay lotes registrados.</p>
+    } @else {
+      <table class="inventario__table">
+        <thead>
+          <tr>
+            <th>Producto</th>
+            <th>Cantidad actual</th>
+            <th>Vencimiento</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (lote of lotes(); track lote.id) {
+            <tr>
+              <td>{{ lote.producto_nombre }}</td>
+              <td>{{ lote.cantidad_actual }}</td>
+              <td>{{ lote.fecha_vencimiento | date: 'dd/MM/yyyy' }}</td>
+              <td>
+                @if (diasParaVencer(lote.fecha_vencimiento) < 0) {
+                  <span class="inventario__badge inventario__badge--vencido">Vencido</span>
+                } @else if (diasParaVencer(lote.fecha_vencimiento) <= 30) {
+                  <span class="inventario__badge inventario__badge--por-vencer">
+                    Vence en {{ diasParaVencer(lote.fecha_vencimiento) }} días
+                  </span>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  }
+</section>

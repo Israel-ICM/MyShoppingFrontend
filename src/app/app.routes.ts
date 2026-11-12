@@ -78,7 +78,7 @@ export const routes: Routes = [
         path: 'inventario',
         data: { title: 'Inventario' },
         loadComponent: () =>
-          import('./views/placeholder/placeholder.component').then((m) => m.PlaceholderComponent),
+          import('./views/inventario/inventario.component').then((m) => m.InventarioComponent),
       },
       {
         path: 'pedidos',
