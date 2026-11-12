@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
 import { CatalogService } from '../../../core/services/catalog.service';
 import { StoreFilterService } from '../../../core/services/store-filter.service';
 import { Categoria, Producto } from '../../../core/models/catalog.model';
@@ -6,6 +6,8 @@ import { ProductCardComponent } from '../product-card/product-card.component';
 import { ProductModalComponent } from '../product-modal/product-modal.component';
 
 const TREINTA_DIAS_MS = 30 * 24 * 60 * 60 * 1000;
+const AUTOPLAY_MS = 5000;
+const BANNERS = ['img/banner1.jpg', 'img/banner2.jpg'];
 
 /** Web principal de la tienda: hero, categorías y catálogo de productos. */
 @Component({
@@ -16,11 +18,16 @@ const TREINTA_DIAS_MS = 30 * 24 * 60 * 60 * 1000;
 })
 export class HomeComponent {
   private readonly catalogService = inject(CatalogService);
+  private readonly destroyRef = inject(DestroyRef);
   protected readonly storeFilter = inject(StoreFilterService);
 
   protected readonly productos = signal<Producto[]>([]);
   protected readonly categorias = signal<Categoria[]>([]);
   protected readonly cargando = signal(true);
+
+  protected readonly banners = signal(BANNERS);
+  protected readonly slideActual = signal(0);
+  private autoPlay?: ReturnType<typeof setInterval>;
 
   protected readonly productoModal = signal<Producto | null>(null);
   protected origenModal: HTMLElement | null = null;
@@ -61,6 +68,40 @@ export class HomeComponent {
       },
       error: () => this.cargando.set(false),
     });
+
+    this.iniciarAutoPlay();
+    this.destroyRef.onDestroy(() => this.detenerAutoPlay());
+  }
+
+  irASlide(index: number): void {
+    const total = this.banners().length;
+    this.slideActual.set((index + total) % total);
+  }
+
+  slideSiguiente(): void {
+    this.irASlide(this.slideActual() + 1);
+    this.iniciarAutoPlay();
+  }
+
+  slideAnterior(): void {
+    this.irASlide(this.slideActual() - 1);
+    this.iniciarAutoPlay();
+  }
+
+  irADot(index: number): void {
+    this.irASlide(index);
+    this.iniciarAutoPlay();
+  }
+
+  private iniciarAutoPlay(): void {
+    this.detenerAutoPlay();
+    if (this.banners().length > 1) {
+      this.autoPlay = setInterval(() => this.irASlide(this.slideActual() + 1), AUTOPLAY_MS);
+    }
+  }
+
+  private detenerAutoPlay(): void {
+    clearInterval(this.autoPlay);
   }
 
   seleccionarCategoria(categoria: Categoria | null): void {

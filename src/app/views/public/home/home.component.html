@@ -1,6 +1,8 @@
 <section class="hero">
   <div class="carousel">
-    <div class="carousel-slide active"></div>
+    @for (banner of banners(); track banner; let i = $index) {
+      <div class="carousel-slide" [class.active]="i === slideActual()" [style.background-image]="'url(' + banner + ')'"></div>
+    }
 
     <div class="carousel-overlay">
       <div class="carousel-content">
@@ -10,6 +12,21 @@
         <a href="#products" class="btn-primary">Ver productos</a>
       </div>
     </div>
+
+    @if (banners().length > 1) {
+      <button type="button" class="hero-btn hero-prev" aria-label="Anterior" (click)="slideAnterior()">
+        <span aria-hidden="true">&lsaquo;</span>
+      </button>
+      <button type="button" class="hero-btn hero-next" aria-label="Siguiente" (click)="slideSiguiente()">
+        <span aria-hidden="true">&rsaquo;</span>
+      </button>
+
+      <div class="carousel-dots">
+        @for (banner of banners(); track banner; let i = $index) {
+          <span [class.active]="i === slideActual()" (click)="irADot(i)"></span>
+        }
+      </div>
+    }
 
     <div class="location-badge">
       <svg class="flag-icon" viewBox="0 0 3 2" xmlns="http://www.w3.org/2000/svg" width="18" height="12">
