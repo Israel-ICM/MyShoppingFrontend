@@ -1,0 +1,62 @@
+<section class="usuario-form-panel">
+  @if (loading()) {
+    <p class="usuario-form__state">Cargando usuario…</p>
+  } @else {
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+      <header class="usuario-form__header">
+        <div class="usuario-form__header-left">
+          <a class="usuario-form__back" routerLink="/admin/usuarios" aria-label="Volver">&larr;</a>
+          <h2>{{ isEdit ? 'Editar usuario' : 'Nuevo usuario' }}</h2>
+        </div>
+        <button type="submit" class="usuario-form__submit" [disabled]="saving()">
+          {{ saving() ? 'Guardando…' : 'Guardar' }}
+        </button>
+      </header>
+
+      @if (error()) {
+        <p class="usuario-form__error" role="alert">{{ error() }}</p>
+      }
+
+      <div class="usuario-form__card">
+        <div class="usuario-form__row">
+          <div class="usuario-form__field">
+            <label for="username">Usuario</label>
+            <input id="username" type="text" formControlName="username" />
+          </div>
+          <div class="usuario-form__field">
+            <label for="email">Email</label>
+            <input id="email" type="email" formControlName="email" />
+          </div>
+        </div>
+
+        <div class="usuario-form__row">
+          <div class="usuario-form__field">
+            <label for="first_name">Nombre</label>
+            <input id="first_name" type="text" formControlName="first_name" />
+          </div>
+          <div class="usuario-form__field">
+            <label for="last_name">Apellido</label>
+            <input id="last_name" type="text" formControlName="last_name" />
+          </div>
+        </div>
+
+        <div class="usuario-form__field">
+          <label for="password">Contraseña</label>
+          <input id="password" type="password" formControlName="password" />
+          <span class="usuario-form__hint">
+            {{ isEdit ? 'Dejar vacío para no cambiarla.' : 'Si se deja vacía, el usuario no va a poder loguearse.' }}
+          </span>
+        </div>
+
+        <label class="usuario-form__checkbox">
+          <input type="checkbox" formControlName="is_active" />
+          Usuario activo
+        </label>
+        <label class="usuario-form__checkbox">
+          <input type="checkbox" formControlName="is_staff" />
+          Es administrador (puede entrar al panel)
+        </label>
+      </div>
+    </form>
+  }
+</section>

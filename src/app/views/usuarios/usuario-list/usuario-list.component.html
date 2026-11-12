@@ -1,0 +1,43 @@
+<section class="usuario-list-panel">
+  <div class="usuario-list__header">
+    <h2>Usuarios</h2>
+    <a class="usuario-list__add" routerLink="/admin/usuarios/nuevo">+ Agregar usuario</a>
+  </div>
+
+  @if (loading()) {
+    <p class="usuario-list__state">Cargando usuarios…</p>
+  } @else if (error()) {
+    <p class="usuario-list__state usuario-list__state--error">{{ error() }}</p>
+  } @else if (usuarios().length === 0) {
+    <p class="usuario-list__state">Todavía no hay usuarios.</p>
+  } @else {
+    <table class="usuario-list__table">
+      <thead>
+        <tr>
+          <th>Usuario</th>
+          <th>Nombre</th>
+          <th>Email</th>
+          <th>Estado</th>
+          <th>Rol</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (usuario of usuarios(); track usuario.id) {
+          <tr>
+            <td>{{ usuario.username }}</td>
+            <td>{{ nombreCompleto(usuario) }}</td>
+            <td>{{ usuario.email || '—' }}</td>
+            <td>
+              <span class="usuario-list__badge" [class.usuario-list__badge--activo]="usuario.is_active">
+                {{ usuario.is_active ? 'Activo' : 'Inactivo' }}
+              </span>
+            </td>
+            <td>{{ usuario.is_staff ? 'Administrador' : 'Estándar' }}</td>
+            <td><a [routerLink]="['/admin/usuarios', usuario.id, 'editar']">Editar</a></td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</section>

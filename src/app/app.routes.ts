@@ -126,9 +126,24 @@ export const routes: Routes = [
       },
       {
         path: 'usuarios',
-        data: { title: 'Usuarios' },
         loadComponent: () =>
-          import('./views/placeholder/placeholder.component').then((m) => m.PlaceholderComponent),
+          import('./views/usuarios/usuario-list/usuario-list.component').then(
+            (m) => m.UsuarioListComponent,
+          ),
+      },
+      {
+        path: 'usuarios/nuevo',
+        loadComponent: () =>
+          import('./views/usuarios/usuario-form/usuario-form.component').then(
+            (m) => m.UsuarioFormComponent,
+          ),
+      },
+      {
+        path: 'usuarios/:id/editar',
+        loadComponent: () =>
+          import('./views/usuarios/usuario-form/usuario-form.component').then(
+            (m) => m.UsuarioFormComponent,
+          ),
       },
       {
         path: 'reportes',
