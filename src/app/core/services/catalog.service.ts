@@ -3,7 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Categoria, Marca, Producto, ProductoInput } from '../models/catalog.model';
-import { Pais } from '../models/ubicacion.model';
+import { Pais, Region } from '../models/ubicacion.model';
 
 export interface ProductoFiltros {
   categoria?: number | null;
@@ -52,5 +52,13 @@ export class CatalogService {
 
   getPaises(): Observable<Pais[]> {
     return this.http.get<Pais[]>(`${environment.apiUrl}/ubicaciones/paises/`);
+  }
+
+  getRegiones(paisId?: number): Observable<Region[]> {
+    let params = new HttpParams();
+    if (paisId) {
+      params = params.set('pais', paisId);
+    }
+    return this.http.get<Region[]>(`${environment.apiUrl}/ubicaciones/regiones/`, { params });
   }
 }
