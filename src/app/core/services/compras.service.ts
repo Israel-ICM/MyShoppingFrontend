@@ -11,6 +11,7 @@ import {
   Proveedor,
   ProveedorInput,
 } from '../models/compra.model';
+import { RecibirCompraInput } from '../models/inventario.model';
 
 @Injectable({ providedIn: 'root' })
 export class ComprasService {
@@ -52,6 +53,11 @@ export class ComprasService {
 
   updateCompraEstado(id: number, estado: EstadoCompra): Observable<Compra> {
     return this.http.patch<Compra>(`${this.baseUrl}/compras/${id}/`, { estado });
+  }
+
+  /** Marca la compra como recibida: crea un lote por linea y suma stock (ver backend). */
+  recibirCompra(id: number, datos: RecibirCompraInput): Observable<Compra> {
+    return this.http.post<Compra>(`${this.baseUrl}/compras/${id}/recibir/`, datos);
   }
 
   deleteCompra(id: number): Observable<void> {

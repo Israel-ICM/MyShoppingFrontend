@@ -1,0 +1,44 @@
+<section class="proveedor-form-panel">
+  @if (loading()) {
+    <p class="proveedor-form__state">Cargando proveedor…</p>
+  } @else {
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+      <header class="proveedor-form__header">
+        <div class="proveedor-form__header-left">
+          <a class="proveedor-form__back" routerLink="/admin/compras/proveedores" aria-label="Volver">&larr;</a>
+          <h2>{{ isEdit ? 'Editar proveedor' : 'Nuevo proveedor' }}</h2>
+        </div>
+        <button type="submit" class="proveedor-form__submit" [disabled]="saving()">
+          {{ saving() ? 'Guardando…' : 'Guardar' }}
+        </button>
+      </header>
+
+      @if (error()) {
+        <p class="proveedor-form__error" role="alert">{{ error() }}</p>
+      }
+
+      <div class="proveedor-form__card">
+        <div class="proveedor-form__field">
+          <label for="nombre">Nombre</label>
+          <input id="nombre" type="text" formControlName="nombre" />
+        </div>
+
+        <div class="proveedor-form__field">
+          <label for="web">Sitio web</label>
+          <input id="web" type="text" placeholder="https://…" formControlName="web" />
+        </div>
+
+        <div class="proveedor-form__row">
+          <div class="proveedor-form__field">
+            <label for="email">Email</label>
+            <input id="email" type="email" formControlName="email" />
+          </div>
+          <div class="proveedor-form__field">
+            <label for="telefono">Teléfono</label>
+            <input id="telefono" type="text" formControlName="telefono" />
+          </div>
+        </div>
+      </div>
+    </form>
+  }
+</section>

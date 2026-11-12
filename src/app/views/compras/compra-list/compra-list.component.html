@@ -1,0 +1,46 @@
+<section class="compra-list-panel">
+  <div class="compra-list__header">
+    <h2>Compras</h2>
+    <div class="compra-list__actions">
+      <a class="compra-list__link" routerLink="/admin/compras/proveedores">Proveedores</a>
+      <a class="compra-list__add" routerLink="/admin/compras/nueva">+ Nueva compra</a>
+    </div>
+  </div>
+
+  @if (loading()) {
+    <p class="compra-list__state">Cargando compras…</p>
+  } @else if (error()) {
+    <p class="compra-list__state compra-list__state--error">{{ error() }}</p>
+  } @else if (compras().length === 0) {
+    <p class="compra-list__state">Todavía no hay compras registradas.</p>
+  } @else {
+    <table class="compra-list__table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Proveedor</th>
+          <th>Estado</th>
+          <th>Fecha</th>
+          <th>Total</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (compra of compras(); track compra.id) {
+          <tr>
+            <td>{{ compra.id }}</td>
+            <td>{{ proveedorNombre(compra.proveedor) }}</td>
+            <td>
+              <span class="compra-list__badge" [class]="'compra-list__badge--' + compra.estado">
+                {{ estadoLabel(compra.estado) }}
+              </span>
+            </td>
+            <td>{{ compra.creado_en | date: 'dd/MM/yyyy' }}</td>
+            <td>Bs {{ total(compra) }}</td>
+            <td><a [routerLink]="['/admin/compras', compra.id]">Ver</a></td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</section>

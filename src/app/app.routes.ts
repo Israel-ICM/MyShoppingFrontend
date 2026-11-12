@@ -70,9 +70,41 @@ export const routes: Routes = [
       },
       {
         path: 'compras',
-        data: { title: 'Compras' },
         loadComponent: () =>
-          import('./views/placeholder/placeholder.component').then((m) => m.PlaceholderComponent),
+          import('./views/compras/compra-list/compra-list.component').then((m) => m.CompraListComponent),
+      },
+      {
+        path: 'compras/nueva',
+        loadComponent: () =>
+          import('./views/compras/compra-form/compra-form.component').then((m) => m.CompraFormComponent),
+      },
+      {
+        path: 'compras/proveedores',
+        loadComponent: () =>
+          import('./views/compras/proveedor-list/proveedor-list.component').then(
+            (m) => m.ProveedorListComponent,
+          ),
+      },
+      {
+        path: 'compras/proveedores/nuevo',
+        loadComponent: () =>
+          import('./views/compras/proveedor-form/proveedor-form.component').then(
+            (m) => m.ProveedorFormComponent,
+          ),
+      },
+      {
+        path: 'compras/proveedores/:id/editar',
+        loadComponent: () =>
+          import('./views/compras/proveedor-form/proveedor-form.component').then(
+            (m) => m.ProveedorFormComponent,
+          ),
+      },
+      {
+        path: 'compras/:id',
+        loadComponent: () =>
+          import('./views/compras/compra-detail/compra-detail.component').then(
+            (m) => m.CompraDetailComponent,
+          ),
       },
       {
         path: 'inventario',

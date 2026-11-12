@@ -1,0 +1,79 @@
+<section class="compra-detail-panel">
+  <a class="compra-detail__back" routerLink="/admin/compras">&larr; Volver a compras</a>
+
+  @if (loading()) {
+    <p class="compra-detail__state">Cargando compra…</p>
+  } @else if (error() && !compra()) {
+    <p class="compra-detail__state compra-detail__state--error">{{ error() }}</p>
+  } @else if (compra(); as compra) {
+    <header class="compra-detail__header">
+      <h2>Compra #{{ compra.id }}</h2>
+      <span class="compra-detail__badge" [class]="'compra-detail__badge--' + compra.estado">
+        {{ estadoLabel(compra.estado) }}
+      </span>
+    </header>
+
+    <p class="compra-detail__meta">Proveedor: {{ proveedorNombre(compra.proveedor) }}</p>
+    <p class="compra-detail__meta">Fecha: {{ compra.creado_en | date: 'dd/MM/yyyy HH:mm' }}</p>
+
+    @if (error()) {
+      <p class="compra-detail__error" role="alert">{{ error() }}</p>
+    }
+
+    <table class="compra-detail__table">
+      <thead>
+        <tr>
+          <th>Producto</th>
+          <th>Cantidad</th>
+          <th>Costo unitario</th>
+          <th>Subtotal</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (detalle of compra.detalles; track detalle.id) {
+          <tr>
+            <td>{{ productoNombre(detalle.producto) }}</td>
+            <td>{{ detalle.cantidad }}</td>
+            <td>Bs {{ detalle.costo_unitario }}</td>
+            <td>Bs {{ detalle.cantidad * +detalle.costo_unitario }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+
+    <p class="compra-detail__total">Total: Bs {{ total() }}</p>
+
+    @if (compra.estado === 'PE') {
+      @if (!recibiendoForm()) {
+        <div class="compra-detail__actions">
+          <button type="button" class="compra-detail__btn compra-detail__btn--primary" (click)="iniciarRecepcion()">
+            Recibir compra
+          </button>
+          <button type="button" class="compra-detail__btn compra-detail__btn--danger" (click)="cancelarCompra()">
+            Cancelar compra
+          </button>
+        </div>
+      } @else {
+        <form class="compra-detail__recepcion" [formGroup]="vencimientos" (ngSubmit)="confirmarRecepcion()">
+          <h4>Fecha de vencimiento por producto</h4>
+          @for (detalle of compra.detalles; track detalle.id) {
+            <div class="compra-detail__field">
+              <label [attr.for]="'venc-' + detalle.id">{{ productoNombre(detalle.producto) }}</label>
+              <input
+                [id]="'venc-' + detalle.id"
+                type="date"
+                [formControlName]="detalle.id.toString()"
+              />
+            </div>
+          }
+          <div class="compra-detail__actions">
+            <button type="submit" class="compra-detail__btn compra-detail__btn--primary" [disabled]="guardando()">
+              {{ guardando() ? 'Confirmando…' : 'Confirmar recepción' }}
+            </button>
+            <button type="button" class="compra-detail__btn" (click)="cancelarRecepcion()">Cancelar</button>
+          </div>
+        </form>
+      }
+    }
+  }
+</section>

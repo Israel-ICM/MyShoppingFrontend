@@ -1,0 +1,122 @@
+.compra-list-panel {
+  padding: var(--space-6);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface-glass);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  box-shadow: var(--shadow-sm);
+}
+
+@supports not (backdrop-filter: blur(1px)) {
+  .compra-list-panel {
+    background: var(--color-surface);
+  }
+}
+
+.compra-list__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-5);
+  font-family: var(--font-sans);
+}
+
+.compra-list__header h2 {
+  margin: 0;
+  color: var(--color-text);
+}
+
+.compra-list__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.compra-list__link {
+  color: var(--color-text-muted);
+  text-decoration: none;
+  font-size: var(--font-size-sm);
+}
+
+.compra-list__link:hover {
+  color: var(--color-brand-accent);
+}
+
+.compra-list__add {
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-pill);
+  background: var(--color-brand);
+  color: var(--color-text-on-brand);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  text-decoration: none;
+}
+
+.compra-list__add:hover {
+  background: var(--color-brand-pressed);
+}
+
+.compra-list__state {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-family: var(--font-sans);
+}
+
+.compra-list__state--error {
+  color: var(--color-danger);
+}
+
+.compra-list__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-sans);
+  font-size: var(--font-size-sm);
+}
+
+.compra-list__table th {
+  text-align: left;
+  padding: var(--space-2) var(--space-3);
+  color: var(--color-text-muted);
+  font-weight: var(--font-weight-semibold);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.compra-list__table td {
+  padding: var(--space-3);
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text);
+}
+
+.compra-list__table a {
+  color: var(--color-brand-accent);
+  text-decoration: none;
+  font-weight: var(--font-weight-medium);
+}
+
+.compra-list__table a:hover {
+  text-decoration: underline;
+}
+
+.compra-list__badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: var(--radius-pill);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+}
+
+.compra-list__badge--PE {
+  background: var(--color-warning);
+  color: #fff;
+}
+
+.compra-list__badge--RC {
+  background: var(--color-success);
+  color: #fff;
+}
+
+.compra-list__badge--CA {
+  background: var(--color-danger);
+  color: #fff;
+}

@@ -1,0 +1,62 @@
+<section class="compra-form-panel">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+    <header class="compra-form__header">
+      <div class="compra-form__header-left">
+        <a class="compra-form__back" routerLink="/admin/compras" aria-label="Volver">&larr;</a>
+        <h2>Nueva compra</h2>
+      </div>
+      <button type="submit" class="compra-form__submit" [disabled]="saving()">
+        {{ saving() ? 'Guardando…' : 'Registrar compra' }}
+      </button>
+    </header>
+
+    @if (error()) {
+      <p class="compra-form__error" role="alert">{{ error() }}</p>
+    }
+
+    <div class="compra-form__card">
+      <div class="compra-form__field">
+        <label>Proveedor</label>
+        <app-filter-select [options]="proveedores()" placeholder="Seleccionar…" formControlName="proveedor" />
+        @if (proveedor.touched && proveedor.invalid) {
+          <span class="compra-form__field-error">Elegí un proveedor</span>
+        }
+      </div>
+    </div>
+
+    <div class="compra-form__card" formArrayName="detalles">
+      <div class="compra-form__lines-header">
+        <h4>Productos</h4>
+        <button type="button" class="compra-form__add-line" (click)="agregarLinea()">+ Agregar línea</button>
+      </div>
+
+      @for (linea of detalles.controls; track $index) {
+        <div class="compra-form__line" [formGroupName]="$index">
+          <div class="compra-form__field">
+            <label>Producto</label>
+            <app-filter-select [options]="productos()" placeholder="Seleccionar…" formControlName="producto" />
+          </div>
+          <div class="compra-form__field compra-form__field--sm">
+            <label>Cantidad</label>
+            <input type="number" min="1" formControlName="cantidad" />
+          </div>
+          <div class="compra-form__field compra-form__field--sm">
+            <label>Costo unitario (Bs.)</label>
+            <input type="number" min="0" step="0.01" formControlName="costo_unitario" />
+          </div>
+          <button
+            type="button"
+            class="compra-form__remove-line"
+            aria-label="Quitar línea"
+            [disabled]="detalles.length === 1"
+            (click)="quitarLinea($index)"
+          >
+            &times;
+          </button>
+        </div>
+      }
+
+      <p class="compra-form__total">Total: Bs {{ total }}</p>
+    </div>
+  </form>
+</section>

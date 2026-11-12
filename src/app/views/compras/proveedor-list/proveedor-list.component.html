@@ -1,0 +1,37 @@
+<section class="proveedor-list-panel">
+  <div class="proveedor-list__header">
+    <h2>Proveedores</h2>
+    <a class="proveedor-list__add" routerLink="/admin/compras/proveedores/nuevo">+ Agregar proveedor</a>
+  </div>
+
+  @if (loading()) {
+    <p class="proveedor-list__state">Cargando proveedores…</p>
+  } @else if (error()) {
+    <p class="proveedor-list__state proveedor-list__state--error">{{ error() }}</p>
+  } @else if (proveedores().length === 0) {
+    <p class="proveedor-list__state">Todavía no hay proveedores.</p>
+  } @else {
+    <table class="proveedor-list__table">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Email</th>
+          <th>Teléfono</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (proveedor of proveedores(); track proveedor.id) {
+          <tr>
+            <td>{{ proveedor.nombre }}</td>
+            <td>{{ proveedor.email || '—' }}</td>
+            <td>{{ proveedor.telefono || '—' }}</td>
+            <td>
+              <a [routerLink]="['/admin/compras/proveedores', proveedor.id, 'editar']">Editar</a>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</section>
