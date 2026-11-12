@@ -114,9 +114,15 @@ export const routes: Routes = [
       },
       {
         path: 'pedidos',
-        data: { title: 'Pedidos' },
         loadComponent: () =>
-          import('./views/placeholder/placeholder.component').then((m) => m.PlaceholderComponent),
+          import('./views/pedidos/pedido-list/pedido-list.component').then((m) => m.PedidoListComponent),
+      },
+      {
+        path: 'pedidos/:id',
+        loadComponent: () =>
+          import('./views/pedidos/pedido-detail/pedido-detail.component').then(
+            (m) => m.PedidoDetailComponent,
+          ),
       },
       {
         path: 'usuarios',

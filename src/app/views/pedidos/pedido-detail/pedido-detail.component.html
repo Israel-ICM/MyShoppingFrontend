@@ -1,0 +1,130 @@
+<section class="pedido-detail-panel">
+  <a class="pedido-detail__back" routerLink="/admin/pedidos">&larr; Volver a pedidos</a>
+
+  @if (loading()) {
+    <p class="pedido-detail__state">Cargando pedido…</p>
+  } @else if (error() && !pedido()) {
+    <p class="pedido-detail__state pedido-detail__state--error">{{ error() }}</p>
+  } @else if (pedido(); as pedido) {
+    <header class="pedido-detail__header">
+      <h2>Pedido #{{ pedido.id }}</h2>
+      <span class="pedido-detail__badge" [class]="'pedido-detail__badge--' + pedido.estado">
+        {{ estadoPedidoLabel(pedido.estado) }}
+      </span>
+    </header>
+
+    <div class="pedido-detail__grid">
+      <div class="pedido-detail__card">
+        <h4>Cliente</h4>
+        <p>{{ pedido.cliente.nombre }}</p>
+        <p>{{ pedido.cliente.telefono }}</p>
+        @if (pedido.cliente.email) {
+          <p>{{ pedido.cliente.email }}</p>
+        }
+        @if (pedido.region_nombre) {
+          <p>Región: {{ pedido.region_nombre }}</p>
+        }
+        @if (pedido.observacion) {
+          <p class="pedido-detail__obs">{{ pedido.observacion }}</p>
+        }
+      </div>
+
+      <div class="pedido-detail__card">
+        <h4>Resumen</h4>
+        <p>Fecha: {{ pedido.fecha | date: 'dd/MM/yyyy HH:mm' }}</p>
+        <p>Total: Bs {{ pedido.total }}</p>
+        <p>Pagado: Bs {{ pedido.monto_pagado }}</p>
+        <p class="pedido-detail__saldo" [class.pedido-detail__saldo--pendiente]="+pedido.saldo_pendiente > 0">
+          Saldo pendiente: Bs {{ pedido.saldo_pendiente }}
+        </p>
+      </div>
+    </div>
+
+    <table class="pedido-detail__table">
+      <thead>
+        <tr>
+          <th>Producto</th>
+          <th>Cantidad</th>
+          <th>Precio unitario</th>
+          <th>Subtotal</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (detalle of pedido.detalles; track detalle.id) {
+          <tr>
+            <td>{{ detalle.producto_nombre }}</td>
+            <td>{{ detalle.cantidad }}</td>
+            <td>Bs {{ detalle.precio_unitario }}</td>
+            <td>Bs {{ detalle.cantidad * +detalle.precio_unitario }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+
+    <div class="pedido-detail__pagos">
+      <div class="pedido-detail__pagos-header">
+        <h4>Pagos</h4>
+        @if (puedeRegistrarPago() && !mostrarForm()) {
+          <button type="button" class="pedido-detail__btn pedido-detail__btn--primary" (click)="abrirFormPago()">
+            Registrar pago
+          </button>
+        }
+      </div>
+
+      @if (pagos().length === 0) {
+        <p class="pedido-detail__state">Todavía no se registraron pagos.</p>
+      } @else {
+        <table class="pedido-detail__table">
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Monto</th>
+              <th>Método</th>
+              <th>Estado</th>
+              <th>Referencia</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (pago of pagos(); track pago.id) {
+              <tr>
+                <td>{{ pago.creado_en | date: 'dd/MM/yyyy HH:mm' }}</td>
+                <td>Bs {{ pago.monto }}</td>
+                <td>{{ metodoLabel(pago.metodo) }}</td>
+                <td>{{ estadoPagoLabel(pago.estado) }}</td>
+                <td>{{ pago.referencia_externa || '—' }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+
+      @if (mostrarForm()) {
+        <form class="pedido-detail__pago-form" [formGroup]="form" (ngSubmit)="registrarPago()" novalidate>
+          @if (errorPago()) {
+            <p class="pedido-detail__error">{{ errorPago() }}</p>
+          }
+          <div class="pedido-detail__pago-row">
+            <div class="pedido-detail__field">
+              <label>Monto (Bs.)</label>
+              <input type="number" min="0.01" step="0.01" formControlName="monto" />
+            </div>
+            <div class="pedido-detail__field">
+              <label>Método</label>
+              <app-filter-select [options]="opcionesMetodo" placeholder="Seleccionar…" formControlName="metodo" />
+            </div>
+            <div class="pedido-detail__field">
+              <label>Referencia (opcional)</label>
+              <input type="text" formControlName="referencia_externa" placeholder="N° de transacción, etc." />
+            </div>
+          </div>
+          <div class="pedido-detail__actions">
+            <button type="submit" class="pedido-detail__btn pedido-detail__btn--primary" [disabled]="guardando()">
+              {{ guardando() ? 'Guardando…' : 'Confirmar pago' }}
+            </button>
+            <button type="button" class="pedido-detail__btn" (click)="cerrarFormPago()">Cancelar</button>
+          </div>
+        </form>
+      }
+    </div>
+  }
+</section>
