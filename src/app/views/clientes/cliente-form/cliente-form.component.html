@@ -1,0 +1,44 @@
+<section class="cliente-form-panel">
+  @if (loading()) {
+    <p class="cliente-form__state">Cargando cliente…</p>
+  } @else {
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+      <header class="cliente-form__header">
+        <div class="cliente-form__header-left">
+          <a class="cliente-form__back" routerLink="/admin/clientes" aria-label="Volver">&larr;</a>
+          <h2>{{ isEdit ? 'Editar cliente' : 'Nuevo cliente' }}</h2>
+        </div>
+        <button type="submit" class="cliente-form__submit" [disabled]="saving()">
+          {{ saving() ? 'Guardando…' : 'Guardar' }}
+        </button>
+      </header>
+
+      @if (error()) {
+        <p class="cliente-form__error" role="alert">{{ error() }}</p>
+      }
+
+      <div class="cliente-form__card">
+        <div class="cliente-form__field">
+          <label for="nombre">Nombre</label>
+          <input id="nombre" type="text" formControlName="nombre" />
+        </div>
+
+        <div class="cliente-form__row">
+          <div class="cliente-form__field">
+            <label for="email">Email</label>
+            <input id="email" type="email" formControlName="email" />
+          </div>
+          <div class="cliente-form__field">
+            <label for="telefono">Teléfono</label>
+            <input id="telefono" type="text" formControlName="telefono" />
+          </div>
+        </div>
+
+        <div class="cliente-form__field">
+          <label for="direccion">Dirección</label>
+          <input id="direccion" type="text" formControlName="direccion" />
+        </div>
+      </div>
+    </form>
+  }
+</section>

@@ -146,6 +146,27 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'clientes',
+        loadComponent: () =>
+          import('./views/clientes/cliente-list/cliente-list.component').then(
+            (m) => m.ClienteListComponent,
+          ),
+      },
+      {
+        path: 'clientes/nuevo',
+        loadComponent: () =>
+          import('./views/clientes/cliente-form/cliente-form.component').then(
+            (m) => m.ClienteFormComponent,
+          ),
+      },
+      {
+        path: 'clientes/:id/editar',
+        loadComponent: () =>
+          import('./views/clientes/cliente-form/cliente-form.component').then(
+            (m) => m.ClienteFormComponent,
+          ),
+      },
+      {
         path: 'reportes',
         data: { title: 'Reportes' },
         loadComponent: () =>
