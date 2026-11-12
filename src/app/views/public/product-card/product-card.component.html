@@ -1,0 +1,68 @@
+<article class="product-card">
+  <div class="product-card-image">
+    @if (sinStock) {
+      <span class="product-badge badge-out">Sin stock</span>
+    } @else if (esNuevo) {
+      <span class="product-badge badge-new">Nuevo</span>
+    }
+    @if (imagen) {
+      <img [src]="imagen" [alt]="producto().nombre" />
+    }
+  </div>
+
+  <div class="product-card-body">
+    <p class="product-card-brand">{{ producto().marca_nombre }}</p>
+    <p class="product-card-name">{{ producto().nombre }}</p>
+
+    <div class="product-card-footer">
+      <span class="product-card-price">Bs {{ producto().precio }}</span>
+
+      <div class="card-actions">
+        <button
+          type="button"
+          class="card-share-btn"
+          data-tooltip="Compartir"
+          (click)="compartir()"
+        >
+          <i class="fab fa-whatsapp"></i>
+        </button>
+        <button
+          type="button"
+          class="card-add-btn"
+          data-tooltip="Agregar al pedido"
+          [disabled]="sinStock"
+          (click)="agregar.emit(producto())"
+        >
+          <i class="fas fa-plus"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</article>
+
+@if (shareModalOpen()) {
+  <div class="share-overlay open" (click)="cerrarShare()">
+    <div class="share-modal" (click)="$event.stopPropagation()">
+      <div class="share-header">
+        <h3>Compartir por WhatsApp</h3>
+        <button class="share-close" type="button" (click)="cerrarShare()">&times;</button>
+      </div>
+      <div class="share-body">
+        <p class="share-product">{{ producto().nombre }}</p>
+        <label class="share-label">Número de WhatsApp:</label>
+        <div class="share-input-wrap">
+          <span class="share-prefix">+</span>
+          <input
+            type="tel"
+            class="share-input"
+            [value]="numeroWhatsapp()"
+            (input)="onNumeroWhatsappChange($event)"
+          />
+        </div>
+        <button class="share-send-btn" type="button" (click)="enviarShare()">
+          <i class="fab fa-whatsapp"></i> Enviar
+        </button>
+      </div>
+    </div>
+  </div>
+}

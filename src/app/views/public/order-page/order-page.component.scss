@@ -1,0 +1,339 @@
+:host {
+  display: block;
+  font-family: var(--font-public-sans);
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  border: none;
+  outline: none;
+  background: none;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.order-page {
+  padding: 100px 24px 80px;
+  background: var(--color-bg);
+  min-height: 60vh;
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.order-back-row {
+  margin-bottom: 16px;
+}
+
+.order-back-btn {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  transition: color 0.2s;
+}
+
+.order-back-btn:hover {
+  color: var(--color-brand);
+}
+
+.order-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 28px;
+  line-height: 1.4;
+}
+
+.order-success {
+  text-align: center;
+}
+
+.order-success .order-btn {
+  display: inline-block;
+  margin-top: 16px;
+}
+
+.order-step {
+  margin-bottom: 24px;
+}
+
+.order-label {
+  display: block;
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--color-text);
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+.order-label b {
+  color: var(--color-brand);
+}
+
+.required {
+  color: var(--color-danger);
+  font-weight: 700;
+}
+
+.order-input,
+.order-textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 0.92rem;
+  font-family: inherit;
+  color: var(--color-text);
+  background: var(--color-surface);
+  transition: border-color 0.2s;
+}
+
+.order-input:focus,
+.order-textarea:focus {
+  border-color: var(--color-brand);
+  outline: none;
+}
+
+.custom-select {
+  position: relative;
+  width: 100%;
+}
+
+.custom-select-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  padding: 12px 16px;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 0.92rem;
+  color: var(--color-text-muted);
+  background: var(--color-surface);
+  font-family: inherit;
+  transition: border-color 0.2s;
+}
+
+.custom-select-trigger.has-value {
+  color: var(--color-text);
+}
+
+.custom-select-trigger i {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  transition: transform 0.2s;
+}
+
+.custom-select.open .custom-select-trigger {
+  border-color: var(--color-brand);
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+}
+
+.custom-select.open .custom-select-trigger i {
+  transform: rotate(180deg);
+}
+
+.custom-select-options {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-brand);
+  border-top: none;
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+  max-height: 220px;
+  overflow-y: auto;
+  z-index: 10;
+  box-shadow: var(--shadow-md);
+}
+
+.custom-select-option {
+  padding: 10px 16px;
+  font-size: 0.9rem;
+  color: var(--color-text);
+  cursor: pointer;
+  transition: background 0.12s;
+}
+
+.custom-select-option:hover {
+  background: var(--color-brand-alpha);
+}
+
+.custom-select-option.selected {
+  font-weight: 600;
+  color: var(--color-brand);
+}
+
+.order-input.error {
+  border-color: var(--color-danger);
+}
+
+.order-textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.order-error {
+  display: none;
+  color: var(--color-danger);
+  font-size: 0.8rem;
+  margin-top: 4px;
+}
+
+.order-error.is-visible {
+  display: block;
+}
+
+.order-products {
+  margin-bottom: 16px;
+}
+
+.order-product-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.order-product-item:last-child {
+  border-bottom: none;
+}
+
+.order-product-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.order-product-name {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.order-product-brand {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.order-product-qty {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.order-qty-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.order-qty-btn:hover {
+  background: var(--color-brand-alpha);
+  border-color: var(--color-brand);
+}
+
+.order-qty-value {
+  font-size: 0.9rem;
+  font-weight: 700;
+  min-width: 20px;
+  text-align: center;
+}
+
+.order-product-price {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--color-brand);
+  white-space: nowrap;
+}
+
+.order-product-remove {
+  color: var(--color-danger);
+  padding: 8px;
+  border-radius: 8px;
+  transition: background 0.15s;
+}
+
+.order-product-remove:hover {
+  background: var(--color-danger-bg);
+}
+
+.order-total {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-text);
+  padding: 12px 0;
+  border-top: 2px solid var(--color-brand);
+  text-align: right;
+}
+
+.order-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 28px;
+}
+
+.order-btn {
+  padding: 13px 28px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  border-radius: var(--radius-pill);
+  border: 2px solid transparent;
+  font-family: inherit;
+  transition: background 0.2s, transform 0.2s, border-color 0.2s;
+}
+
+.order-btn:hover {
+  transform: translateY(-2px);
+}
+
+.order-btn-primary {
+  background: var(--color-brand);
+  color: #fff;
+  border-color: var(--color-brand);
+}
+
+.order-btn-primary:hover {
+  background: var(--color-brand-pressed);
+}
+
+.order-btn-outline {
+  background: transparent;
+  color: var(--color-brand);
+  border-color: var(--color-brand);
+}
+
+.order-btn-outline:hover {
+  background: var(--color-brand-alpha);
+}
+
+.order-btn-secondary {
+  background: transparent;
+  color: var(--color-text-muted);
+  border-color: var(--color-text-muted);
+}
+
+.order-btn-secondary:hover {
+  color: var(--color-danger);
+  border-color: var(--color-danger);
+}
+
+.order-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none !important;
+}

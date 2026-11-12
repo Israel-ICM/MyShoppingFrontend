@@ -1,0 +1,307 @@
+@if (splashVisible()) {
+  <div class="splash-overlay">
+    <app-logo class="splash-logo" style="--logo-size: 220px" />
+  </div>
+}
+
+<header class="site-header" [class.scrolled]="scrolled()">
+  <div class="header-container">
+    <div class="header-left">
+      <button class="icon-btn menu-toggle" aria-label="Menú" (click)="toggleMobileMenu()">
+        <i class="fas fa-bars"></i>
+      </button>
+      <button class="icon-btn" aria-label="Buscar" (click)="openSpotlight()">
+        <i class="fas fa-search"></i>
+      </button>
+    </div>
+
+    <nav class="nav-left">
+      <a href="#" (click)="$event.preventDefault(); openBrandsOverlay()">Marcas</a>
+      <a href="#" (click)="$event.preventDefault(); openCategoriesOverlay()">Categorías</a>
+      <a href="#" (click)="$event.preventDefault(); aplicarNovedades()">Novedades</a>
+    </nav>
+
+    <div class="logo">
+      <a routerLink="/" aria-label="MyShopping">
+        <app-logo [style.--logo-size]="scrolled() ? '133px' : '194px'" />
+      </a>
+    </div>
+
+    <nav class="nav-right">
+      <a href="#" (click)="$event.preventDefault(); openFaq()">Preguntas frecuentes</a>
+      <a href="#" (click)="$event.preventDefault(); openContacts()">Contáctanos</a>
+    </nav>
+
+    <div class="header-right">
+      <button class="icon-btn" aria-label="Cambiar tema" (click)="themeService.toggle()">
+        <i class="fas" [class.fa-moon]="themeService.theme() === 'light'" [class.fa-sun]="themeService.theme() === 'dark'"></i>
+      </button>
+
+      <div class="cart-wrapper">
+        <button class="icon-btn cart-toggle" aria-label="Carrito" (click)="toggleCartDropdown()">
+          <i class="fas fa-shopping-bag"></i>
+          @if (cart.totalItems() > 0) {
+            <span class="cart-badge">{{ cart.totalItems() }}</span>
+          }
+        </button>
+
+        @if (cartDropdownOpen()) {
+          <div class="cart-dropdown">
+            <a class="cart-dropdown-item" routerLink="/pedido" (click)="cartDropdownOpen.set(false)">
+              Completar pedido
+            </a>
+            <button class="cart-dropdown-item cart-dropdown-danger" type="button" (click)="cancelarPedido()">
+              Cancelar pedido
+            </button>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  @if (mobileMenuOpen()) {
+    <div class="mobile-menu">
+      <button class="mobile-theme-row" type="button" (click)="themeService.toggle()">
+        <i class="fas fa-moon"></i>
+        <span>Modo oscuro</span>
+      </button>
+      <a href="#" (click)="$event.preventDefault(); openBrandsOverlay(); closeMobileMenu()"><i class="fas fa-tag"></i> Marcas</a>
+      <a href="#" (click)="$event.preventDefault(); openCategoriesOverlay(); closeMobileMenu()"><i class="fas fa-layer-group"></i> Categorías</a>
+      <a href="#" (click)="$event.preventDefault(); aplicarNovedades()"><i class="fas fa-star"></i> Novedades</a>
+      <a href="#" (click)="$event.preventDefault(); openFaq(); closeMobileMenu()"><i class="fas fa-question-circle"></i> Preguntas frecuentes</a>
+      <a href="#" (click)="$event.preventDefault(); openShipping(); closeMobileMenu()"><i class="fas fa-truck"></i> Envíos</a>
+      <a href="#" (click)="$event.preventDefault(); openContacts(); closeMobileMenu()"><i class="fas fa-envelope"></i> Contáctanos</a>
+      <a routerLink="/login" class="mobile-admin-link" (click)="closeMobileMenu()">
+        <i class="fas fa-lock"></i> Iniciar sesión
+      </a>
+    </div>
+  }
+</header>
+
+<main>
+  <router-outlet />
+</main>
+
+<footer class="footer">
+  <div class="footer-content">
+    <div class="footer-brand">
+      <h3>MyShopping</h3>
+      <p>Tu destino para el cuidado de la piel. Productos coreanos auténticos, resultados reales.</p>
+      <div class="footer-social">
+        <a href="https://wa.me/59163053155" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i></a>
+        <a href="https://www.facebook.com/profile.php?id=61583523375298" target="_blank" rel="noopener"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://www.tiktok.com/@my_shopping_bolivia" target="_blank" rel="noopener"><i class="fab fa-tiktok"></i></a>
+      </div>
+    </div>
+
+    <div class="footer-links">
+      <h4>Explorar</h4>
+      <a href="#" (click)="$event.preventDefault(); openBrandsOverlay()">Marcas</a>
+      <a href="#" (click)="$event.preventDefault(); openCategoriesOverlay()">Categorías</a>
+      <a href="#" (click)="$event.preventDefault(); aplicarNovedades()">Novedades</a>
+    </div>
+
+    <div class="footer-links">
+      <h4>Ayuda</h4>
+      <a href="#" (click)="$event.preventDefault(); openFaq()">Preguntas frecuentes</a>
+      <a href="#" (click)="$event.preventDefault(); openContacts()">Contáctanos</a>
+      <a href="#" (click)="$event.preventDefault(); openShipping()">Envíos</a>
+      <a routerLink="/login">Iniciar sesión</a>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>&copy; 2026 MyShopping. Todos los derechos reservados. — La Paz, Bolivia</p>
+  </div>
+</footer>
+
+@if (spotlightOpen()) {
+  <div class="spotlight-overlay active" (click)="closeSpotlight()">
+    <div class="spotlight-input-wrap" (click)="$event.stopPropagation()">
+      <i class="fas fa-search"></i>
+      <input
+        type="text"
+        [value]="spotlightQuery()"
+        (input)="onSpotlightQueryChange($event)"
+        placeholder="Buscar productos o marcas…"
+        autofocus
+      />
+      <span class="spotlight-hint">ESC</span>
+    </div>
+
+    @if (spotlightQuery().trim()) {
+      <div class="spotlight-panel active" (click)="$event.stopPropagation()">
+        <div class="spotlight-results">
+          @if (!spotlightResultados().length) {
+            <p class="spotlight-empty">Sin resultados para "{{ spotlightQuery() }}"</p>
+          } @else {
+            @for (producto of spotlightResultados(); track producto.id) {
+              <a class="spotlight-item" routerLink="/" (click)="closeSpotlight()">
+                <div class="spotlight-item-info">
+                  <div class="name">{{ producto.nombre }}</div>
+                  <div class="meta">{{ producto.marca_nombre }}</div>
+                </div>
+                <span class="price">Bs {{ producto.precio }}</span>
+              </a>
+            }
+          }
+        </div>
+      </div>
+    }
+  </div>
+}
+
+@if (brandsOverlayOpen()) {
+  <div class="spotlight-overlay active" (click)="closeBrandsOverlay()">
+    <div class="spotlight-input-wrap" (click)="$event.stopPropagation()">
+      <i class="fas fa-tag"></i>
+      <input
+        type="text"
+        [value]="brandsQuery()"
+        (input)="onBrandsQueryChange($event)"
+        placeholder="Filtrar marcas…"
+        autofocus
+      />
+      <span class="spotlight-hint">ESC</span>
+    </div>
+
+    <div class="spotlight-panel active" (click)="$event.stopPropagation()">
+      <div class="spotlight-results">
+        @if (!marcasFiltradas().length) {
+          <p class="spotlight-empty">Sin marcas para mostrar.</p>
+        } @else {
+          @for (marca of marcasFiltradas(); track marca.id) {
+            <a class="spotlight-item" href="#" (click)="$event.preventDefault(); seleccionarMarca(marca)">
+              <div class="spotlight-item-info">
+                <div class="name">{{ marca.nombre }}</div>
+              </div>
+            </a>
+          }
+        }
+      </div>
+    </div>
+  </div>
+}
+
+@if (categoriesOverlayOpen()) {
+  <div class="spotlight-overlay active" (click)="closeCategoriesOverlay()">
+    <div class="spotlight-input-wrap" (click)="$event.stopPropagation()">
+      <i class="fas fa-layer-group"></i>
+      <input
+        type="text"
+        [value]="categoriesQuery()"
+        (input)="onCategoriesQueryChange($event)"
+        placeholder="Filtrar categorías…"
+        autofocus
+      />
+      <span class="spotlight-hint">ESC</span>
+    </div>
+
+    <div class="spotlight-panel active" (click)="$event.stopPropagation()">
+      <div class="spotlight-results">
+        @if (!categoriasFiltradas().length) {
+          <p class="spotlight-empty">Sin categorías para mostrar.</p>
+        } @else {
+          @for (categoria of categoriasFiltradas(); track categoria.id) {
+            <a
+              class="spotlight-item"
+              href="#"
+              (click)="$event.preventDefault(); seleccionarCategoriaNav(categoria)"
+            >
+              <div class="spotlight-item-info">
+                <div class="name">{{ categoria.nombre }}</div>
+              </div>
+            </a>
+          }
+        }
+      </div>
+    </div>
+  </div>
+}
+
+@if (faqOpen()) {
+  <div class="modal-overlay-generic" (click)="closeFaq()">
+    <div class="faq-modal" (click)="$event.stopPropagation()">
+      <div class="faq-modal-header">
+        <h2>Preguntas frecuentes</h2>
+        <button type="button" class="modal-close-generic" (click)="closeFaq()">&times;</button>
+      </div>
+      <div class="faq-grid">
+        @for (faq of faqs; track faq.id) {
+          <div class="faq-card">
+            <div class="faq-question">{{ faq.pregunta }}</div>
+            <div class="faq-answer" [innerHTML]="faq.respuesta"></div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+}
+
+@if (contactsOpen()) {
+  <div class="modal-overlay-generic" (click)="closeContacts()">
+    <div class="contacts-modal" (click)="$event.stopPropagation()">
+      <div class="contacts-header">
+        <h2>Contáctanos</h2>
+        <button type="button" class="modal-close-generic" (click)="closeContacts()">&times;</button>
+      </div>
+      <div class="contacts-body">
+        @for (contact of contactItems; track contact.id) {
+          <a class="contact-item" [href]="contact.href" target="_blank" rel="noopener">
+            <div class="contact-icon" [class]="contact.iconClass">
+              <i [class]="contact.icon"></i>
+            </div>
+            <div class="contact-info">
+              <div class="contact-label">{{ contact.label }}</div>
+              <div class="contact-value">{{ contact.value }}</div>
+            </div>
+            <i class="fas fa-chevron-right contact-arrow"></i>
+          </a>
+        }
+      </div>
+    </div>
+  </div>
+}
+
+@if (shippingOpen()) {
+  <div class="modal-overlay-generic" (click)="closeShipping()">
+    <div class="shipping-modal" (click)="$event.stopPropagation()">
+      <div class="shipping-header">
+        <h2><i class="fas fa-truck"></i> Envíos</h2>
+        <button type="button" class="modal-close-generic" (click)="closeShipping()">&times;</button>
+      </div>
+      <div class="shipping-body">
+        <div class="shipping-promo">
+          <i class="fas fa-gift"></i>
+          <span><strong>A partir de 2 productos</strong>, el envío es <strong>GRATIS</strong> 🎉</span>
+        </div>
+        <p class="shipping-intro">
+          Hacemos envíos a todos los departamentos de Bolivia. El costo del envío es el mismo que nos
+          cobra la transportadora (sin recargo).
+        </p>
+        <div class="shipping-table">
+          <div class="shipping-row shipping-row-header">
+            <span class="shipping-dept">Departamento</span>
+            <span class="shipping-cost">Costo de envío*</span>
+          </div>
+          @for (fila of shippingRows; track fila.departamento) {
+            <div class="shipping-row">
+              <span class="shipping-dept">{{ fila.departamento }}</span>
+              <span class="shipping-cost" [class.shipping-free]="fila.gratis">
+                @if (fila.gratis) {
+                  <span class="shipping-badge">Gratis</span>
+                } @else {
+                  {{ fila.costo }}
+                }
+              </span>
+            </div>
+          }
+        </div>
+        <p class="shipping-footnote">
+          *El costo varía según el peso y tamaño del paquete. Te confirmamos el monto exacto antes de
+          enviar.
+        </p>
+      </div>
+    </div>
+  </div>
+}

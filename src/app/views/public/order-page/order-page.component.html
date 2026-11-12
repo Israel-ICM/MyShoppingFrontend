@@ -1,0 +1,160 @@
+@if (enviado()) {
+  <section class="order-page">
+    <div class="order-success">
+      <h2 class="order-title">¡Gracias por tu pedido!</h2>
+      <p>Te contactaremos pronto para coordinar la entrega.</p>
+      <a routerLink="/" class="order-btn order-btn-primary">Volver a la tienda</a>
+    </div>
+  </section>
+} @else {
+  <section class="order-page">
+    <div class="order-back-row">
+      <a routerLink="/" class="order-back-btn"><i class="fas fa-arrow-left"></i> Volver</a>
+    </div>
+
+    @if (!lineas().length) {
+      <h2 class="order-title">No tienes productos en el carrito.</h2>
+      <a routerLink="/" class="order-btn order-btn-outline">Ver catálogo</a>
+    } @else {
+      <h2 class="order-title">Por favor sigue los pasos para completar el pedido:</h2>
+
+      <form [formGroup]="form" (ngSubmit)="confirmar()">
+        <div class="order-step">
+          <label class="order-label">1. Ingresa tu nombre <span class="required">*</span>:</label>
+          <input
+            type="text"
+            class="order-input"
+            [class.error]="nombreInvalido"
+            formControlName="nombre"
+            placeholder="Ej: María García"
+          />
+          @if (nombreInvalido) {
+            <span class="order-error is-visible">Este campo es obligatorio</span>
+          }
+        </div>
+
+        <div class="order-step">
+          <label class="order-label">
+            2. Ingresa tu número de celular para que podamos comunicarnos contigo <span class="required">*</span>:
+          </label>
+          <input
+            type="tel"
+            class="order-input"
+            [class.error]="telefonoInvalido"
+            formControlName="telefono"
+            maxlength="8"
+            placeholder="Ej: 69123456"
+          />
+          @if (telefonoInvalido) {
+            <span class="order-error is-visible">Debe tener exactamente 8 dígitos</span>
+          }
+        </div>
+
+        <div class="order-step">
+          <label class="order-label">
+            3. Si tienes alguna observación puedes escribirla a continuación (no es obligatorio):
+          </label>
+          <textarea
+            class="order-textarea"
+            formControlName="observacion"
+            placeholder="Ej: Prefiero que me llamen por la tarde..."
+          ></textarea>
+        </div>
+
+        <div class="order-step">
+          <label class="order-label">
+            4. Somos del departamento de <b>La Paz</b>, si quieres que te hagamos un envío a otro departamento
+            especifícalo a continuación:
+          </label>
+          <div class="custom-select" [class.open]="regionDropdownOpen()">
+            <button
+              type="button"
+              class="custom-select-trigger"
+              [class.has-value]="!!regionSeleccionada()"
+              (click)="toggleRegionDropdown()"
+            >
+              <span>{{ regionSeleccionada()?.nombre ?? 'Selecciona un departamento' }}</span>
+              <i class="fas fa-chevron-down"></i>
+            </button>
+
+            @if (regionDropdownOpen()) {
+              <div class="custom-select-options">
+                @for (region of regiones(); track region.id) {
+                  <div
+                    class="custom-select-option"
+                    [class.selected]="regionSeleccionada()?.id === region.id"
+                    (click)="seleccionarRegion(region.id)"
+                  >
+                    {{ region.nombre }}
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        </div>
+
+        <div class="order-step">
+          <label class="order-label">5. Verifica los productos:</label>
+
+          <div class="order-products">
+            @for (linea of lineas(); track linea.producto.id) {
+              <div class="order-product-item">
+                <div class="order-product-info">
+                  <p class="order-product-name">{{ linea.producto.nombre }}</p>
+                  <p class="order-product-brand">{{ linea.producto.marca_nombre }}</p>
+                  <div class="order-product-qty">
+                    <button
+                      type="button"
+                      class="order-qty-btn"
+                      (click)="restarCantidad(linea.producto.id, linea.cantidad)"
+                    >
+                      −
+                    </button>
+                    <span class="order-qty-value">{{ linea.cantidad }}</span>
+                    <button
+                      type="button"
+                      class="order-qty-btn"
+                      (click)="sumarCantidad(linea.producto.id, linea.cantidad)"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+                <span class="order-product-price">Bs {{ linea.producto.precio }}</span>
+                <button
+                  type="button"
+                  class="order-product-remove"
+                  aria-label="Quitar"
+                  (click)="quitar(linea.producto.id)"
+                >
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            }
+          </div>
+
+          <div class="order-total">Total: Bs {{ total() }}</div>
+        </div>
+
+        @if (error()) {
+          <p class="order-error is-visible">{{ error() }}</p>
+        }
+
+        <div class="order-actions">
+          <button
+            type="button"
+            class="order-btn order-btn-secondary"
+            routerLink="/"
+            (click)="cancelarPedido()"
+          >
+            Cancelar pedido
+          </button>
+          <a routerLink="/" class="order-btn order-btn-outline">Elegir más productos</a>
+          <button type="submit" class="order-btn order-btn-primary" [disabled]="enviando()">
+            {{ enviando() ? 'Enviando...' : 'Confirmar pedido' }}
+          </button>
+        </div>
+      </form>
+    }
+  </section>
+}

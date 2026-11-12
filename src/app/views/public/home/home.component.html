@@ -1,0 +1,96 @@
+<section class="hero">
+  <div class="carousel">
+    <div class="carousel-slide active"></div>
+
+    <div class="carousel-overlay">
+      <div class="carousel-content">
+        <p class="carousel-subtitle">K-Beauty</p>
+        <h1 class="carousel-title">¡Tu piel radiante comienza aquí!</h1>
+        <p class="carousel-desc">Descubre nuestra selección exclusiva de productos de belleza coreanos</p>
+        <a href="#products" class="btn-primary">Ver productos</a>
+      </div>
+    </div>
+
+    <div class="location-badge">
+      <svg class="flag-icon" viewBox="0 0 3 2" xmlns="http://www.w3.org/2000/svg" width="18" height="12">
+        <rect width="3" height="2" fill="#DA291C" />
+        <rect y="0.666" width="3" height="0.667" fill="#FEDF00" />
+        <rect y="1.333" width="3" height="0.667" fill="#007A3D" />
+      </svg>
+      <span>La Paz, Bolivia</span>
+    </div>
+  </div>
+</section>
+
+<section class="parallax-section">
+  <div class="parallax-overlay">
+    <h2>Tu propia rutina coreana</h2>
+    <p>La belleza no es solo apariencia, es un ritual de amor propio</p>
+  </div>
+</section>
+
+<section id="categories-section" class="categories-section">
+  @if (categorias().length) {
+    <div class="section-header">
+      <span class="section-tag">Categorías que te recomendamos</span>
+      <h2>Explora por categoría</h2>
+    </div>
+
+    <div class="category-pills-scroll">
+      <div class="category-pill-wrap">
+        <button
+          type="button"
+          class="category-pill category-pill--noimg"
+          [class.active]="!storeFilter.filtro()"
+          (click)="seleccionarCategoria(null)"
+        ></button>
+        <span class="category-pill-label">Todas</span>
+      </div>
+      @for (categoria of categorias(); track categoria.id) {
+        <div class="category-pill-wrap">
+          <button
+            type="button"
+            class="category-pill category-pill--noimg"
+            [class.active]="categoriaActiva(categoria)"
+            (click)="seleccionarCategoria(categoria)"
+          ></button>
+          <span class="category-pill-label">{{ categoria.nombre }}</span>
+        </div>
+      }
+    </div>
+  }
+</section>
+
+<section id="products" class="products-section">
+  <div class="section-header">
+    <span class="section-tag">Nuestros productos</span>
+    <h2>Descubre lo mejor del K-Beauty</h2>
+  </div>
+
+  @if (storeFilter.filtro()) {
+    <div class="brand-filter-bar active">
+      <span>{{ filtroTexto() }}</span>
+      <button type="button" class="clear-filter" (click)="storeFilter.limpiar()">Mostrar todos</button>
+    </div>
+  }
+
+  <div class="products-grid">
+    @if (cargando()) {
+      @for (item of [1, 2, 3, 4]; track item) {
+        <div class="skeleton-card">
+          <div class="skeleton-card-image"></div>
+          <div class="skeleton-card-body">
+            <div class="skeleton-line skeleton-line-sm"></div>
+            <div class="skeleton-line skeleton-line-lg"></div>
+          </div>
+        </div>
+      }
+    } @else if (!productosFiltrados().length) {
+      <p class="products-empty">No hay productos disponibles.</p>
+    } @else {
+      @for (producto of productosFiltrados(); track producto.id) {
+        <app-product-card [producto]="producto" (agregar)="agregarAlCarrito($event)" />
+      }
+    }
+  </div>
+</section>
