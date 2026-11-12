@@ -1,4 +1,9 @@
 <section class="product-list-panel">
+  <div class="product-list__header">
+    <h2>Productos</h2>
+    <a class="product-list__add" routerLink="/admin/productos/nuevo">+ Agregar producto</a>
+  </div>
+
   <div class="product-list__filters">
     <app-filter-select
       [options]="categorias()"
@@ -10,7 +15,6 @@
       placeholder="Todas las marcas"
       (valueChange)="onMarcaChange($event)"
     />
-    <a class="product-list__add" routerLink="/admin/productos/nuevo">+ Agregar producto</a>
   </div>
 
   @if (loading()) {
@@ -20,15 +24,37 @@
   } @else if (productos().length === 0) {
     <p class="product-list__state">No hay productos para este filtro.</p>
   } @else {
-    <div class="product-list__grid">
-      @for (producto of productos(); track producto.id) {
-        <a class="product-card" [routerLink]="['/admin/productos', producto.id]">
-          <h3 class="product-card__name">{{ producto.nombre }}</h3>
-          <p class="product-card__brand">{{ marcaNombre(producto.marca) }}</p>
-          <p class="product-card__price">Bs. {{ producto.precio }}</p>
-          <p class="product-card__stock">Stock: {{ producto.stock }}</p>
-        </a>
-      }
-    </div>
+    <table class="product-list__table">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Nombre</th>
+          <th>Marca</th>
+          <th>Precio</th>
+          <th>Stock</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (producto of productos(); track producto.id) {
+          <tr>
+            <td>
+              <div class="product-list__thumb">
+                @if (fotoPrincipal(producto)) {
+                  <img [src]="fotoPrincipal(producto)" [alt]="producto.nombre" />
+                } @else {
+                  <span class="product-list__thumb-placeholder">Sin foto</span>
+                }
+              </div>
+            </td>
+            <td>{{ producto.nombre }}</td>
+            <td>{{ marcaNombre(producto.marca) }}</td>
+            <td>Bs. {{ producto.precio }}</td>
+            <td>{{ producto.stock }}</td>
+            <td><a [routerLink]="['/admin/productos', producto.id]">Ver</a></td>
+          </tr>
+        }
+      </tbody>
+    </table>
   }
 </section>

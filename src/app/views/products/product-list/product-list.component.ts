@@ -32,13 +32,18 @@ export class ProductListComponent {
     return this.marcas().find((marca) => marca.id === marcaId)?.nombre ?? '—';
   }
 
-  onCategoriaChange(value: number | null): void {
-    this.categoriaId.set(value);
+  fotoPrincipal(producto: Producto): string | null {
+    const fotos = producto.fotos;
+    return fotos.find((foto) => foto.principal)?.url ?? fotos[0]?.url ?? null;
+  }
+
+  onCategoriaChange(value: string | number | null): void {
+    this.categoriaId.set(value === null ? null : Number(value));
     this.cargarProductos();
   }
 
-  onMarcaChange(value: number | null): void {
-    this.marcaId.set(value);
+  onMarcaChange(value: string | number | null): void {
+    this.marcaId.set(value === null ? null : Number(value));
     this.cargarProductos();
   }
 
