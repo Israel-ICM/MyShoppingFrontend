@@ -1,5 +1,5 @@
 <section class="product-detail-panel">
-  <a class="product-detail__back" routerLink="/productos">&larr; Volver al catálogo</a>
+  <a class="product-detail__back" routerLink="/admin/productos">&larr; Volver al catálogo</a>
 
   @if (loading()) {
     <p class="product-detail__state">Cargando producto…</p>
@@ -13,7 +13,7 @@
           <p class="product-detail__code">Código: {{ producto.codigo }}</p>
         </div>
         <div class="product-detail__actions">
-          <a class="product-detail__edit" [routerLink]="['/productos', producto.id, 'editar']">Editar</a>
+          <a class="product-detail__edit" [routerLink]="['/admin/productos', producto.id, 'editar']">Editar</a>
           <button type="button" class="product-detail__delete" [disabled]="deleting()" (click)="eliminar()">
             {{ deleting() ? 'Eliminando…' : 'Eliminar' }}
           </button>

@@ -13,7 +13,7 @@
         class="sidebar__link"
         [routerLink]="item.path"
         routerLinkActive="sidebar__link--active"
-        [routerLinkActiveOptions]="{ exact: item.path === '/' }"
+        [routerLinkActiveOptions]="{ exact: item.path === '/admin' }"
         (click)="closeSidebar()"
       >
         <svg class="sidebar__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">

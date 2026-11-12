@@ -73,7 +73,7 @@ export class LoginComponent {
     this.authService.login(username.trim(), password).subscribe({
       next: () => {
         this.loading.set(false);
-        this.router.navigate(['/']);
+        this.router.navigate(['/admin']);
       },
       error: (error: Error) => {
         this.loading.set(false);

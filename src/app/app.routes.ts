@@ -9,6 +9,27 @@ export const routes: Routes = [
   {
     path: '',
     loadComponent: () =>
+      import('./views/public/public-layout/public-layout.component').then(
+        (m) => m.PublicLayoutComponent,
+      ),
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import('./views/public/home/home.component').then((m) => m.HomeComponent),
+      },
+      {
+        path: 'pedido',
+        loadComponent: () =>
+          import('./views/public/order-page/order-page.component').then(
+            (m) => m.OrderPageComponent,
+          ),
+      },
+    ],
+  },
+  {
+    path: 'admin',
+    loadComponent: () =>
       import('./views/protected-layout/protected-layout.component').then(
         (m) => m.ProtectedLayoutComponent,
       ),

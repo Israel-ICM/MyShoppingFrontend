@@ -110,7 +110,7 @@ export class ProductFormComponent {
     request$.subscribe({
       next: (producto) => {
         this.saving.set(false);
-        this.router.navigate(['/productos', producto.id]);
+        this.router.navigate(['/admin/productos', producto.id]);
       },
       error: () => {
         this.saving.set(false);

@@ -13,7 +13,7 @@ describe('ProductFormComponent', () => {
 
   const categorias: Categoria[] = [{ id: 1, nombre: 'Skincare' }];
   const marcas: Marca[] = [{ id: 10, nombre: 'Innisfree' }];
-  const paises: Pais[] = [{ id: 1, nombre: 'Corea del Sur' }];
+  const paises: Pais[] = [{ id: 1, nombre: 'Corea del Sur', abreviacion: 'KR' }];
 
   function setup(
     routeId: string | null,
@@ -60,6 +60,8 @@ describe('ProductFormComponent', () => {
       descripcion: 'desc',
       pais: 1,
       marca: 10,
+      marca_nombre: 'Innisfree',
+      fotos: [],
       peso: '1',
       costo: '1',
       precio: '50',
@@ -139,7 +141,7 @@ describe('ProductFormComponent', () => {
     component.onSubmit();
 
     expect(createProducto).toHaveBeenCalled();
-    expect(router.navigate).toHaveBeenCalledWith(['/productos', 9]);
+    expect(router.navigate).toHaveBeenCalledWith(['/admin/productos', 9]);
   });
 
   it('shows an error and does not navigate when saving fails', () => {

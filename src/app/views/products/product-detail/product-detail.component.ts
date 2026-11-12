@@ -58,7 +58,7 @@ export class ProductDetailComponent {
     this.deleting.set(true);
     this.actionError.set(null);
     this.catalogService.deleteProducto(this.productId).subscribe({
-      next: () => this.router.navigate(['/productos']),
+      next: () => this.router.navigate(['/admin/productos']),
       error: () => {
         this.actionError.set('No se pudo eliminar el producto.');
         this.deleting.set(false);

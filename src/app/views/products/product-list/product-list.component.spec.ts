@@ -16,7 +16,7 @@ describe('ProductListComponent', () => {
     { id: 20, nombre: 'Laneige' },
   ];
   const productos: Producto[] = [
-    { id: 1, categorias: [1], codigo: 'A', nombre: 'Sérum A', descripcion: '', pais: 1, marca: 10, peso: '1', costo: '1', precio: '50', stock: 3, link_referencia: '', creado_en: '', activo: true },
+    { id: 1, categorias: [1], codigo: 'A', nombre: 'Sérum A', descripcion: '', pais: 1, marca: 10, marca_nombre: 'Innisfree', fotos: [], peso: '1', costo: '1', precio: '50', stock: 3, link_referencia: '', creado_en: '', activo: true },
   ];
 
   function setup(getProductosImpl?: () => ReturnType<CatalogService['getProductos']>): void {

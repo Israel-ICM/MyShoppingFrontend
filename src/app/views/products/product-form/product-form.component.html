@@ -5,7 +5,7 @@
     <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
       <header class="product-form__header">
         <div class="product-form__header-left">
-          <a class="product-form__back" routerLink="/productos" aria-label="Volver">&larr;</a>
+          <a class="product-form__back" routerLink="/admin/productos" aria-label="Volver">&larr;</a>
           <h2 class="product-form__title">{{ isEdit ? 'Editar producto' : 'Nuevo producto' }}</h2>
         </div>
         <button type="submit" class="product-form__submit" [disabled]="saving()">

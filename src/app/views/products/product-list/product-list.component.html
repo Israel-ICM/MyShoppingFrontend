@@ -10,7 +10,7 @@
       placeholder="Todas las marcas"
       (valueChange)="onMarcaChange($event)"
     />
-    <a class="product-list__add" routerLink="/productos/nuevo">+ Agregar producto</a>
+    <a class="product-list__add" routerLink="/admin/productos/nuevo">+ Agregar producto</a>
   </div>
 
   @if (loading()) {
@@ -22,7 +22,7 @@
   } @else {
     <div class="product-list__grid">
       @for (producto of productos(); track producto.id) {
-        <a class="product-card" [routerLink]="['/productos', producto.id]">
+        <a class="product-card" [routerLink]="['/admin/productos', producto.id]">
           <h3 class="product-card__name">{{ producto.nombre }}</h3>
           <p class="product-card__brand">{{ marcaNombre(producto.marca) }}</p>
           <p class="product-card__price">Bs. {{ producto.precio }}</p>

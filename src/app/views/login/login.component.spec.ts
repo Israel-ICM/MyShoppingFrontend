@@ -129,7 +129,7 @@ describe('LoginComponent', () => {
     component.onSubmit();
 
     expect(component.loading()).toBe(false);
-    expect(router.navigate).toHaveBeenCalledWith(['/']);
+    expect(router.navigate).toHaveBeenCalledWith(['/admin']);
   });
 
   // REQ-5.7

@@ -24,16 +24,16 @@ export class ProtectedLayoutComponent {
   protected readonly sidebarOpen = signal(false);
 
   protected readonly navItems: NavItem[] = [
-    { label: 'Dashboard', path: '/', icon: 'dashboard' },
-    { label: 'Productos', path: '/productos', icon: 'productos' },
-    { label: 'Compras', path: '/compras', icon: 'compras' },
-    { label: 'Inventario', path: '/inventario', icon: 'inventario' },
-    { label: 'Pedidos', path: '/pedidos', icon: 'pedidos' },
-    { label: 'Usuarios', path: '/usuarios', icon: 'usuarios' },
+    { label: 'Dashboard', path: '/admin', icon: 'dashboard' },
+    { label: 'Productos', path: '/admin/productos', icon: 'productos' },
+    { label: 'Compras', path: '/admin/compras', icon: 'compras' },
+    { label: 'Inventario', path: '/admin/inventario', icon: 'inventario' },
+    { label: 'Pedidos', path: '/admin/pedidos', icon: 'pedidos' },
+    { label: 'Usuarios', path: '/admin/usuarios', icon: 'usuarios' },
   ];
 
   protected readonly reportItems: NavItem[] = [
-    { label: 'Reportes', path: '/reportes', icon: 'reportes' },
+    { label: 'Reportes', path: '/admin/reportes', icon: 'reportes' },
   ];
 
   protected toggleSidebar(): void {

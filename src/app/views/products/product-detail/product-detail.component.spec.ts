@@ -20,6 +20,8 @@ describe('ProductDetailComponent', () => {
     descripcion: 'Descripción',
     pais: 1,
     marca: 10,
+    marca_nombre: 'Innisfree',
+    fotos: [],
     peso: '1',
     costo: '1',
     precio: '50',
@@ -98,7 +100,7 @@ describe('ProductDetailComponent', () => {
 
     component.eliminar();
 
-    expect(router.navigate).toHaveBeenCalledWith(['/productos']);
+    expect(router.navigate).toHaveBeenCalledWith(['/admin/productos']);
   });
 
   it('shows an action error and stops the deleting state when delete fails', () => {
