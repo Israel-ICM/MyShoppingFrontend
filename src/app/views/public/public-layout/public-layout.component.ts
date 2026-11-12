@@ -6,6 +6,8 @@ import { CatalogService } from '../../../core/services/catalog.service';
 import { StoreFilterService } from '../../../core/services/store-filter.service';
 import { Categoria, Marca, Producto } from '../../../core/models/catalog.model';
 import { LogoComponent } from '../../../shared/components/logo/logo.component';
+import { ToastComponent } from '../../../shared/components/toast/toast.component';
+import { ConfirmDialogComponent } from '../../../shared/components/confirm-dialog/confirm-dialog.component';
 import { CONTACT_ITEMS, FAQS, SHIPPING_ROWS } from './public-layout.content';
 
 const SPLASH_DURATION_MS = 1200;
@@ -15,7 +17,7 @@ const HEADER_SCROLL_THRESHOLD = 40;
 /** Shell de la tienda pública: header, overlays (buscador/marcas/categorías/FAQ/contactos/envíos), contenido y footer. */
 @Component({
   selector: 'app-public-layout',
-  imports: [RouterLink, RouterOutlet, LogoComponent],
+  imports: [RouterLink, RouterOutlet, LogoComponent, ToastComponent, ConfirmDialogComponent],
   templateUrl: './public-layout.component.html',
   styleUrl: './public-layout.component.scss',
 })

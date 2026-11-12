@@ -1,0 +1,345 @@
+:host {
+  display: block;
+  font-family: var(--font-public-sans);
+}
+
+button {
+  border: none;
+  outline: none;
+  background: none;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0);
+  transition: background 0.4s ease;
+}
+
+.modal-overlay.open {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.modal-content {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+
+.modal-content.hidden {
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.modal-scroll {
+  max-height: 90vh;
+  overflow-y: auto;
+  padding-bottom: 28px;
+  scrollbar-gutter: stable;
+}
+
+.modal-close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  z-index: 10;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.35);
+  color: #fff;
+  font-size: 26px;
+  line-height: 1;
+  transition: background 0.2s;
+}
+
+.modal-close:hover {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.modal-image,
+.modal-img-placeholder {
+  width: 100%;
+  aspect-ratio: 1;
+}
+
+.modal-image {
+  overflow: hidden;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+.modal-img-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg);
+  color: var(--color-text-muted);
+  font-size: 2.5rem;
+}
+
+/* ===== CARRUSEL ===== */
+.modal-carousel {
+  position: relative;
+  width: 100%;
+}
+
+.modal-carousel-viewport {
+  overflow: hidden;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+.modal-carousel-track {
+  display: flex;
+  transition: transform 0.3s ease;
+}
+
+.modal-carousel-slide {
+  min-width: 100%;
+  box-sizing: border-box;
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: var(--color-bg);
+}
+
+.modal-carousel-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  cursor: zoom-in;
+}
+
+.modal-carousel-btn {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  width: 36px;
+  height: 36px;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  color: #333;
+  font-size: 14px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, box-shadow 0.15s;
+}
+
+.modal-carousel-btn:hover {
+  background: #fff;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+.modal-carousel-prev {
+  left: 10px;
+}
+
+.modal-carousel-next {
+  right: 10px;
+}
+
+.modal-carousel-thumbs {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.modal-carousel-thumbs::-webkit-scrollbar {
+  display: none;
+}
+
+.modal-carousel-thumb {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid transparent;
+  opacity: 0.5;
+  cursor: pointer;
+  transition: border-color 0.15s, opacity 0.15s;
+}
+
+.modal-carousel-thumb.active {
+  border-color: var(--color-brand);
+  opacity: 1;
+}
+
+.modal-carousel-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.modal-carousel-price {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
+  padding: 10px 20px;
+  border-radius: 14px 0 0 0;
+  background: var(--color-brand);
+  color: #fff;
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  line-height: 1.2;
+}
+
+.modal-carousel-thumbs + .modal-carousel-price {
+  bottom: 60px;
+}
+
+/* ===== CUERPO ===== */
+.modal-body {
+  padding: 28px;
+}
+
+.modal-brand {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--color-brand);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.modal-name {
+  margin: 0 0 4px;
+  font-family: var(--font-public-serif);
+  font-size: 1.35rem;
+  color: var(--color-text);
+  line-height: 1.3;
+}
+
+.modal-category {
+  display: inline-block;
+  margin-bottom: 14px;
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+}
+
+.modal-desc {
+  margin-bottom: 24px;
+  color: var(--color-text-muted);
+  font-size: 0.88rem;
+  line-height: 1.7;
+}
+
+.modal-qty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.modal-qty-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.modal-qty-btn:hover {
+  background: var(--color-brand-alpha);
+  border-color: var(--color-brand);
+  color: var(--color-brand);
+}
+
+.modal-qty-value {
+  min-width: 30px;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.modal-add-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 14px;
+  border-radius: var(--radius-pill);
+  background: var(--color-brand);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.modal-add-btn:hover:not(:disabled) {
+  background: var(--color-brand-700);
+  transform: translateY(-1px);
+}
+
+.modal-add-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ===== LIGHTBOX DE IMAGEN ===== */
+.lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  background: rgba(0, 0, 0, 0.85);
+  cursor: pointer;
+}
+
+.lightbox-content {
+  max-width: 90vw;
+  max-height: 90vh;
+  cursor: default;
+}
+
+.lightbox-content img {
+  max-width: 100%;
+  max-height: 90vh;
+  display: block;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+@media (max-width: 768px) {
+  .lightbox-overlay {
+    padding: 20px;
+  }
+}

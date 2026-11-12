@@ -1,0 +1,73 @@
+<div class="modal-overlay" [class.open]="abierto()" (click)="solicitarCierre()">
+  <div class="modal-content" [class.hidden]="!listo() || cerrando()" (click)="$event.stopPropagation()">
+    <button type="button" class="modal-close" aria-label="Cerrar" (click)="solicitarCierre()">&times;</button>
+
+    <div class="modal-scroll">
+      @if (fotos().length) {
+        <div class="modal-carousel">
+          <div class="modal-carousel-viewport">
+            <div class="modal-carousel-track" [style.transform]="'translateX(-' + slideActual() * 100 + '%)'">
+              @for (foto of fotos(); track foto.id) {
+                <div class="modal-carousel-slide">
+                  <img [src]="foto.url" [alt]="producto().nombre" (click)="abrirLightbox()" />
+                </div>
+              }
+            </div>
+          </div>
+
+          @if (fotos().length > 1) {
+            <button type="button" class="modal-carousel-btn modal-carousel-prev" aria-label="Anterior" (click)="anterior()">
+              <i class="fas fa-chevron-left"></i>
+            </button>
+            <button type="button" class="modal-carousel-btn modal-carousel-next" aria-label="Siguiente" (click)="siguiente()">
+              <i class="fas fa-chevron-right"></i>
+            </button>
+            <div class="modal-carousel-thumbs">
+              @for (foto of fotos(); track foto.id; let i = $index) {
+                <div class="modal-carousel-thumb" [class.active]="i === slideActual()" (click)="irAFoto(i)">
+                  <img [src]="foto.url" alt="" />
+                </div>
+              }
+            </div>
+          }
+
+          @if (+producto().precio > 0) {
+            <div class="modal-carousel-price">Bs {{ producto().precio }}</div>
+          }
+        </div>
+      } @else {
+        <div class="modal-image">
+          <div class="modal-img-placeholder"><i class="fas fa-box"></i></div>
+        </div>
+      }
+
+      <div class="modal-body">
+        <span class="modal-brand">{{ producto().marca_nombre }}</span>
+        <h2 class="modal-name">{{ producto().nombre }}</h2>
+        @if (categoriaNombre()) {
+          <span class="modal-category">{{ categoriaNombre() }}</span>
+        }
+        <p class="modal-desc">{{ producto().descripcion }}</p>
+
+        <div class="modal-qty">
+          <button type="button" class="modal-qty-btn" aria-label="Reducir cantidad" (click)="disminuir()">-</button>
+          <span class="modal-qty-value">{{ cantidad() }}</span>
+          <button type="button" class="modal-qty-btn" aria-label="Aumentar cantidad" (click)="aumentar()">+</button>
+        </div>
+
+        <button type="button" class="modal-add-btn" [disabled]="producto().stock <= 0" (click)="agregarAlPedido()">
+          <i class="fas" [class.fa-shopping-bag]="!enOrden()" [class.fa-check]="enOrden()"></i>
+          <span>{{ enOrden() ? 'Quitar del pedido' : 'Agregar al pedido' }}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+@if (lightboxUrl(); as url) {
+  <div class="lightbox-overlay" (click)="cerrarLightbox()">
+    <div class="lightbox-content" (click)="$event.stopPropagation()">
+      <img [src]="url" alt="" />
+    </div>
+  </div>
+}

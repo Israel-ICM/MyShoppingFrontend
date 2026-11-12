@@ -1,0 +1,9 @@
+@if (toast.estado(); as estado) {
+  <div class="toast show">
+    <i class="fas fa-check-circle"></i>
+    <span>{{ estado.mensaje }}</span>
+    @if (estado.onRevertir) {
+      <button type="button" class="toast-revert" (click)="toast.revertir()">Deshacer</button>
+    }
+  </div>
+}

@@ -1,4 +1,9 @@
-<article class="product-card">
+<article
+  class="product-card"
+  [class.in-order]="enOrden"
+  [attr.data-id]="producto().id"
+  (click)="abrirDetalle()"
+>
   <div class="product-card-image">
     @if (sinStock) {
       <span class="product-badge badge-out">Sin stock</span>
@@ -22,18 +27,19 @@
           type="button"
           class="card-share-btn"
           data-tooltip="Compartir"
-          (click)="compartir()"
+          (click)="$event.stopPropagation(); compartir()"
         >
           <i class="fab fa-whatsapp"></i>
         </button>
         <button
           type="button"
           class="card-add-btn"
-          data-tooltip="Agregar al pedido"
+          [class.added]="enOrden"
+          [attr.data-tooltip]="enOrden ? 'Quitar del pedido' : 'Agregar al pedido'"
           [disabled]="sinStock"
-          (click)="agregar.emit(producto())"
+          (click)="$event.stopPropagation(); alternarCarrito()"
         >
-          <i class="fas fa-plus"></i>
+          <i class="fas" [class.fa-shopping-bag]="!enOrden" [class.fa-check]="enOrden"></i>
         </button>
       </div>
     </div>

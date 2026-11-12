@@ -1,21 +1,43 @@
-import { Component, input, output, signal } from '@angular/core';
+import { Component, inject, input, output, signal } from '@angular/core';
 import { Producto } from '../../../core/models/catalog.model';
+import { CartService } from '../../../core/services/cart.service';
+import { ConfirmService } from '../../../core/services/confirm.service';
 
 const TREINTA_DIAS_MS = 30 * 24 * 60 * 60 * 1000;
 const NUMERO_WHATSAPP_DEFAULT = '59163053155';
 
-/** Card de producto del catálogo público: foto, marca, precio, agregar y compartir. */
+/** Card de producto del catálogo público: foto, marca, precio, agregar y compartir. Click en la card abre la vista previa. */
 @Component({
   selector: 'app-product-card',
   templateUrl: './product-card.component.html',
   styleUrl: './product-card.component.scss',
 })
 export class ProductCardComponent {
+  private readonly cart = inject(CartService);
+  private readonly confirm = inject(ConfirmService);
+
   readonly producto = input.required<Producto>();
-  readonly agregar = output<Producto>();
+  readonly detalle = output<Producto>();
 
   protected readonly shareModalOpen = signal(false);
   protected readonly numeroWhatsapp = signal(NUMERO_WHATSAPP_DEFAULT);
+
+  get enOrden(): boolean {
+    return this.cart.isInOrder(this.producto().id);
+  }
+
+  abrirDetalle(): void {
+    this.detalle.emit(this.producto());
+  }
+
+  alternarCarrito(): void {
+    const producto = this.producto();
+    if (!this.enOrden) {
+      this.cart.intentarAgregar(producto);
+      return;
+    }
+    this.confirm.preguntar('¿Quitar este producto del pedido?', () => this.cart.remove(producto.id));
+  }
 
   private get enlaceProducto(): string {
     return `${location.origin}/?producto=${this.producto().id}`;

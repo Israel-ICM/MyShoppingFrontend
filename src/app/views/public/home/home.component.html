@@ -89,8 +89,17 @@
       <p class="products-empty">No hay productos disponibles.</p>
     } @else {
       @for (producto of productosFiltrados(); track producto.id) {
-        <app-product-card [producto]="producto" (agregar)="agregarAlCarrito($event)" />
+        <app-product-card [producto]="producto" (detalle)="abrirDetalle($event)" />
       }
     }
   </div>
 </section>
+
+@if (productoModal(); as producto) {
+  <app-product-modal
+    [producto]="producto"
+    [origen]="origenModal"
+    [categoriaNombre]="categoriaNombreDe(producto)"
+    (cerrar)="cerrarDetalle()"
+  />
+}

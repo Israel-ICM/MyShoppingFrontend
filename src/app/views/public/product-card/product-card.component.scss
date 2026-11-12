@@ -17,12 +17,17 @@ button {
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-sm);
   overflow: hidden;
+  cursor: pointer;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .product-card:hover {
   transform: scale(1.02);
   box-shadow: var(--shadow-md);
+}
+
+.product-card.in-order {
+  box-shadow: 0 0 0 2px var(--color-brand), var(--shadow-sm);
 }
 
 .product-card-image {
@@ -116,6 +121,11 @@ button {
 }
 
 .card-add-btn:hover:not(:disabled) {
+  background: var(--color-brand);
+  color: #fff;
+}
+
+.card-add-btn.added {
   background: var(--color-brand);
   color: #fff;
 }

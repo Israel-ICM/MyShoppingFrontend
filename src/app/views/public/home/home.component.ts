@@ -1,27 +1,29 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { CatalogService } from '../../../core/services/catalog.service';
-import { CartService } from '../../../core/services/cart.service';
 import { StoreFilterService } from '../../../core/services/store-filter.service';
 import { Categoria, Producto } from '../../../core/models/catalog.model';
 import { ProductCardComponent } from '../product-card/product-card.component';
+import { ProductModalComponent } from '../product-modal/product-modal.component';
 
 const TREINTA_DIAS_MS = 30 * 24 * 60 * 60 * 1000;
 
 /** Web principal de la tienda: hero, categorías y catálogo de productos. */
 @Component({
   selector: 'app-home',
-  imports: [ProductCardComponent],
+  imports: [ProductCardComponent, ProductModalComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
 export class HomeComponent {
   private readonly catalogService = inject(CatalogService);
-  protected readonly cart = inject(CartService);
   protected readonly storeFilter = inject(StoreFilterService);
 
   protected readonly productos = signal<Producto[]>([]);
   protected readonly categorias = signal<Categoria[]>([]);
   protected readonly cargando = signal(true);
+
+  protected readonly productoModal = signal<Producto | null>(null);
+  protected origenModal: HTMLElement | null = null;
 
   protected readonly productosFiltrados = computed(() => {
     const filtro = this.storeFilter.filtro();
@@ -74,7 +76,20 @@ export class HomeComponent {
     return filtro?.tipo === 'categoria' && filtro.id === categoria.id;
   }
 
-  agregarAlCarrito(producto: Producto): void {
-    this.cart.add(producto.id);
+  abrirDetalle(producto: Producto): void {
+    this.origenModal = document.querySelector(`.product-card[data-id="${producto.id}"]`);
+    this.productoModal.set(producto);
+  }
+
+  cerrarDetalle(): void {
+    this.productoModal.set(null);
+    this.origenModal = null;
+  }
+
+  categoriaNombreDe(producto: Producto): string {
+    return producto.categorias
+      .map((id) => this.categorias().find((c) => c.id === id)?.nombre)
+      .filter((nombre): nombre is string => !!nombre)
+      .join(', ');
   }
 }

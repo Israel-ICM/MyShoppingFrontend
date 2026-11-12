@@ -1,0 +1,12 @@
+@if (confirm.estado(); as estado) {
+  <div class="confirm-overlay active" (click)="confirm.cancelar()">
+    <div class="confirm-modal" (click)="$event.stopPropagation()">
+      <div class="confirm-icon"><i class="fas fa-question-circle"></i></div>
+      <p class="confirm-message">{{ estado.mensaje }}</p>
+      <div class="confirm-actions">
+        <button type="button" class="confirm-btn confirm-no" (click)="confirm.cancelar()">Cancelar</button>
+        <button type="button" class="confirm-btn confirm-yes" (click)="confirm.confirmar()">Sí</button>
+      </div>
+    </div>
+  </div>
+}
