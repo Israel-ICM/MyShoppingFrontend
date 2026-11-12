@@ -14,6 +14,11 @@ export interface ProductoFoto {
   principal: boolean;
 }
 
+export interface ProductoVideo {
+  id: number;
+  url: string;
+}
+
 export interface Producto {
   id: number;
   categorias: number[];
@@ -24,6 +29,7 @@ export interface Producto {
   marca: number;
   marca_nombre: string;
   fotos: ProductoFoto[];
+  videos: ProductoVideo[];
   peso: string;
   costo: string;
   precio: string;
@@ -33,4 +39,10 @@ export interface Producto {
   activo: boolean;
 }
 
-export type ProductoInput = Omit<Producto, 'id' | 'creado_en' | 'marca_nombre' | 'fotos'>;
+export type ProductoInput = Omit<
+  Producto,
+  'id' | 'creado_en' | 'marca_nombre' | 'fotos' | 'videos'
+> & {
+  fotos: Array<{ url: string; principal: boolean }>;
+  videos: Array<{ url: string }>;
+};

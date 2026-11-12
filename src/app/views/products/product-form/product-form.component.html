@@ -44,23 +44,13 @@
 
             <div class="product-form__row">
               <div class="product-form__field">
-                <label for="marca">Marca</label>
-                <select id="marca" formControlName="marca">
-                  <option [ngValue]="null">Seleccionar…</option>
-                  @for (marca of marcas(); track marca.id) {
-                    <option [ngValue]="marca.id">{{ marca.nombre }}</option>
-                  }
-                </select>
+                <label>Marca</label>
+                <app-filter-select [options]="marcas()" placeholder="Seleccionar…" formControlName="marca" />
               </div>
 
               <div class="product-form__field">
-                <label for="pais">País de origen</label>
-                <select id="pais" formControlName="pais">
-                  <option [ngValue]="null">Seleccionar…</option>
-                  @for (pais of paises(); track pais.id) {
-                    <option [ngValue]="pais.id">{{ pais.nombre }}</option>
-                  }
-                </select>
+                <label>País de origen</label>
+                <app-filter-select [options]="paises()" placeholder="Seleccionar…" formControlName="pais" />
               </div>
             </div>
           </div>
@@ -129,6 +119,86 @@
                 </span>
               }
             </div>
+          </div>
+
+          <div class="product-form__card">
+            <h4 class="product-form__card-title">Imágenes</h4>
+            <p class="product-form__card-hint">Agregá URLs de imagen o subí un archivo. La primera es la principal.</p>
+
+            <div class="product-form__img-add-row">
+              <input
+                type="url"
+                placeholder="https://…"
+                [value]="fotoUrlInput()"
+                (input)="onFotoUrlInput($any($event.target).value)"
+              />
+              <button type="button" class="product-form__btn-sm" (click)="agregarFotoUrl()">Agregar URL</button>
+              <label class="product-form__btn-sm product-form__file-label">
+                {{ subiendoArchivo() ? 'Subiendo…' : 'Subir archivo' }}
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  [disabled]="subiendoArchivo()"
+                  (change)="onArchivoSeleccionado($event)"
+                />
+              </label>
+            </div>
+
+            @if (errorArchivo()) {
+              <p class="product-form__error">{{ errorArchivo() }}</p>
+            }
+
+            @if (fotos().length) {
+              <div class="product-form__img-grid">
+                @for (foto of fotos(); track $index) {
+                  <div class="product-form__img-item" [class.product-form__img-item--principal]="foto.principal">
+                    <img [src]="foto.url" alt="" />
+                    @if (foto.principal) {
+                      <span class="product-form__img-badge">Principal</span>
+                    } @else {
+                      <button type="button" class="product-form__img-action" (click)="marcarPrincipal($index)">
+                        Marcar principal
+                      </button>
+                    }
+                    <button
+                      type="button"
+                      class="product-form__img-remove"
+                      aria-label="Quitar imagen"
+                      (click)="quitarFoto($index)"
+                    >
+                      &times;
+                    </button>
+                  </div>
+                }
+              </div>
+            }
+          </div>
+
+          <div class="product-form__card">
+            <h4 class="product-form__card-title">Videos</h4>
+            <p class="product-form__card-hint">Agregá links de video (YouTube, etc.)</p>
+
+            <div class="product-form__img-add-row">
+              <input
+                type="url"
+                placeholder="https://…"
+                [value]="videoUrlInput()"
+                (input)="onVideoUrlInput($any($event.target).value)"
+              />
+              <button type="button" class="product-form__btn-sm" (click)="agregarVideo()">Agregar</button>
+            </div>
+
+            @if (videos().length) {
+              <ul class="product-form__video-list">
+                @for (video of videos(); track $index) {
+                  <li>
+                    <a [href]="video.url" target="_blank" rel="noopener">{{ video.url }}</a>
+                    <button type="button" aria-label="Quitar video" (click)="quitarVideo($index)">&times;</button>
+                  </li>
+                }
+              </ul>
+            }
           </div>
         </div>
       </div>

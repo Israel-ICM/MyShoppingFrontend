@@ -2,12 +2,13 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CatalogService } from '../../../core/services/catalog.service';
-import { Categoria, Marca, ProductoInput } from '../../../core/models/catalog.model';
+import { Categoria, Marca, ProductoFoto, ProductoInput, ProductoVideo } from '../../../core/models/catalog.model';
 import { Pais } from '../../../core/models/ubicacion.model';
+import { FilterSelectComponent } from '../../../shared/components/filter-select/filter-select.component';
 
 @Component({
   selector: 'app-product-form',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, FilterSelectComponent],
   templateUrl: './product-form.component.html',
   styleUrl: './product-form.component.scss',
 })
@@ -38,6 +39,13 @@ export class ProductFormComponent {
   readonly saving = signal(false);
   readonly error = signal<string | null>(null);
 
+  readonly fotos = signal<Array<Partial<ProductoFoto> & { url: string; principal: boolean }>>([]);
+  readonly videos = signal<Array<Partial<ProductoVideo> & { url: string }>>([]);
+  readonly fotoUrlInput = signal('');
+  readonly videoUrlInput = signal('');
+  readonly subiendoArchivo = signal(false);
+  readonly errorArchivo = signal<string | null>(null);
+
   readonly form = new FormGroup({
     codigo: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     nombre: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
@@ -62,6 +70,8 @@ export class ProductFormComponent {
         next: (producto) => {
           this.form.patchValue(producto);
           this.selectedCategorias.set(producto.categorias);
+          this.fotos.set(producto.fotos);
+          this.videos.set(producto.videos);
           this.loading.set(false);
         },
         error: () => {
@@ -86,6 +96,75 @@ export class ProductFormComponent {
     this.categoriaSearch.set(value);
   }
 
+  onFotoUrlInput(value: string): void {
+    this.fotoUrlInput.set(value);
+  }
+
+  agregarFotoUrl(): void {
+    const url = this.fotoUrlInput().trim();
+    if (!url) {
+      return;
+    }
+    this.fotos.update((actual) => [...actual, { url, principal: actual.length === 0 }]);
+    this.fotoUrlInput.set('');
+  }
+
+  onArchivoSeleccionado(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const archivos = input.files;
+    if (!archivos || archivos.length === 0) {
+      return;
+    }
+
+    this.subiendoArchivo.set(true);
+    this.errorArchivo.set(null);
+
+    Array.from(archivos).forEach((archivo) => {
+      this.catalogService.subirImagen(archivo).subscribe({
+        next: ({ url }) => {
+          this.fotos.update((actual) => [...actual, { url, principal: actual.length === 0 }]);
+          this.subiendoArchivo.set(false);
+        },
+        error: () => {
+          this.subiendoArchivo.set(false);
+          this.errorArchivo.set('No se pudo subir la imagen.');
+        },
+      });
+    });
+    input.value = '';
+  }
+
+  marcarPrincipal(index: number): void {
+    this.fotos.update((actual) => actual.map((foto, i) => ({ ...foto, principal: i === index })));
+  }
+
+  quitarFoto(index: number): void {
+    this.fotos.update((actual) => {
+      const siguiente = actual.filter((_, i) => i !== index);
+      if (siguiente.length > 0 && !siguiente.some((f) => f.principal)) {
+        siguiente[0] = { ...siguiente[0], principal: true };
+      }
+      return siguiente;
+    });
+  }
+
+  onVideoUrlInput(value: string): void {
+    this.videoUrlInput.set(value);
+  }
+
+  agregarVideo(): void {
+    const url = this.videoUrlInput().trim();
+    if (!url) {
+      return;
+    }
+    this.videos.update((actual) => [...actual, { url }]);
+    this.videoUrlInput.set('');
+  }
+
+  quitarVideo(index: number): void {
+    this.videos.update((actual) => actual.filter((_, i) => i !== index));
+  }
+
   onSubmit(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
@@ -101,6 +180,8 @@ export class ProductFormComponent {
       pais: value.pais as number,
       marca: value.marca as number,
       categorias: this.selectedCategorias(),
+      fotos: this.fotos().map(({ url, principal }) => ({ url, principal })),
+      videos: this.videos().map(({ url }) => ({ url })),
     };
 
     const request$ = this.isEdit

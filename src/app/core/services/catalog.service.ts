@@ -54,6 +54,13 @@ export class CatalogService {
     return this.http.get<Pais[]>(`${environment.apiUrl}/ubicaciones/paises/`);
   }
 
+  /** Sube un archivo de imagen al servidor y devuelve la URL pública para guardarla en el producto. */
+  subirImagen(archivo: File): Observable<{ url: string }> {
+    const formData = new FormData();
+    formData.append('archivo', archivo);
+    return this.http.post<{ url: string }>(`${this.baseUrl}/productos/subir_imagen/`, formData);
+  }
+
   getRegiones(paisId?: number): Observable<Region[]> {
     let params = new HttpParams();
     if (paisId) {

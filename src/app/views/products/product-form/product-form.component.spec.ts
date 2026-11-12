@@ -62,6 +62,7 @@ describe('ProductFormComponent', () => {
       marca: 10,
       marca_nombre: 'Innisfree',
       fotos: [],
+      videos: [],
       peso: '1',
       costo: '1',
       precio: '50',
