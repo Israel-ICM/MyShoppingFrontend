@@ -6,4 +6,5 @@
 :host svg {
   width: var(--logo-size, 32px);
   height: auto;
+  transition: width 0.3s ease;
 }

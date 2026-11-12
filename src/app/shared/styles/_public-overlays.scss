@@ -1,0 +1,382 @@
+/* Overlays de la tienda pública: splash, buscador, FAQ, contactos, envíos. */
+
+.splash-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-surface);
+}
+
+.splash-logo {
+  color: var(--color-brand);
+  animation: splashPop 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes splashPop {
+  from {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ===== SPOTLIGHT SEARCH ===== */
+.spotlight-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: min(15vh, 120px);
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.spotlight-input-wrap {
+  width: min(620px, 90vw);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+}
+
+.spotlight-input-wrap i {
+  color: var(--color-text-muted);
+}
+
+.spotlight-input-wrap input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 1.05rem;
+  font-family: inherit;
+  color: var(--color-text);
+  background: transparent;
+}
+
+.spotlight-hint {
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+  background: var(--color-bg);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.spotlight-panel {
+  width: min(620px, 90vw);
+  background: var(--color-surface);
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  overflow-y: auto;
+  margin-top: -1px;
+  max-height: 50vh;
+}
+
+.spotlight-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 20px;
+}
+
+.spotlight-item:hover {
+  background: var(--color-brand-alpha);
+}
+
+.spotlight-item-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.spotlight-item-info .name {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.spotlight-item-info .meta {
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+}
+
+.spotlight-item .price {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-brand);
+  white-space: nowrap;
+}
+
+.spotlight-empty {
+  padding: 32px 20px;
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
+/* ===== GENERIC MODAL (FAQ / contactos / envíos) ===== */
+.modal-overlay-generic {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 20px;
+}
+
+.modal-close-generic {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--color-border);
+  font-size: 22px;
+  color: var(--color-text);
+}
+
+/* FAQ */
+.faq-modal {
+  width: min(700px, 92vw);
+  max-height: 80vh;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+}
+
+.faq-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 28px 0;
+}
+
+.faq-modal-header h2 {
+  font-family: var(--font-public-serif);
+  font-size: 1.3rem;
+  color: var(--color-text);
+}
+
+.faq-grid {
+  padding: 20px 28px 28px;
+  overflow-y: auto;
+}
+
+.faq-card {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 20px 24px;
+  margin-bottom: 16px;
+}
+
+.faq-card:last-child {
+  margin-bottom: 0;
+}
+
+.faq-question {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 10px;
+}
+
+.faq-answer {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
+/* Contactos */
+.contacts-modal {
+  width: min(480px, 92vw);
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+
+.contacts-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 28px 0;
+}
+
+.contacts-header h2 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.contacts-body {
+  padding: 20px 28px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  transition: background 0.2s, transform 0.15s;
+}
+
+.contact-item:hover {
+  background: var(--color-brand-alpha);
+  transform: translateY(-1px);
+}
+
+.contact-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+  color: #fff;
+}
+
+.contact-icon.whatsapp {
+  background: #25d366;
+}
+
+.contact-icon.email {
+  background: #ea4335;
+}
+
+.contact-icon.tiktok {
+  background: #111111;
+}
+
+.contact-icon.facebook {
+  background: #1877f2;
+}
+
+.contact-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.contact-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.contact-value {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.contact-arrow {
+  color: var(--color-text-muted);
+}
+
+/* Envíos */
+.shipping-modal {
+  width: min(480px, 92vw);
+  max-height: 85vh;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  overflow-y: auto;
+}
+
+.shipping-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 28px 0;
+}
+
+.shipping-header h2 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.shipping-body {
+  padding: 20px 28px 28px;
+}
+
+.shipping-promo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--color-success-bg);
+  color: var(--color-success);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  font-size: 0.9rem;
+}
+
+.shipping-intro {
+  font-size: 0.88rem;
+  color: var(--color-text-muted);
+  margin-bottom: 16px;
+}
+
+.shipping-table {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.shipping-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 16px;
+  font-size: 0.88rem;
+}
+
+.shipping-row:nth-child(even) {
+  background: var(--color-bg);
+}
+
+.shipping-row-header {
+  background: var(--color-border) !important;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.shipping-dept {
+  color: var(--color-text);
+}
+
+.shipping-free {
+  color: var(--color-success);
+}
+
+.shipping-badge {
+  background: var(--color-success);
+  color: #fff;
+  padding: 2px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 0.78rem;
+}
+
+.shipping-footnote {
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+  margin-top: 12px;
+}
