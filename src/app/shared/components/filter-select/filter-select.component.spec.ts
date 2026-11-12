@@ -30,7 +30,7 @@ describe('FilterSelectComponent', () => {
   });
 
   it('emits the selected id, updates the label and closes the list', () => {
-    const emitted: (number | null)[] = [];
+    const emitted: (string | number | null)[] = [];
     component.valueChange.subscribe((value) => emitted.push(value));
     component.open.set(true);
 

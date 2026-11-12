@@ -3,6 +3,7 @@
   class="filter-select__trigger"
   [class.filter-select__trigger--open]="open()"
   [class.filter-select__trigger--has-value]="selectedId() !== null"
+  [disabled]="disabled()"
   (click)="toggle()"
 >
   <span>{{ selectedLabel() }}</span>
@@ -12,22 +13,36 @@
 </button>
 
 @if (open()) {
-  <ul class="filter-select__options">
-    <li
-      class="filter-select__option"
-      [class.filter-select__option--selected]="selectedId() === null"
-      (click)="select(null)"
-    >
-      {{ placeholder }}
-    </li>
-    @for (option of options; track option.id) {
+  <div class="filter-select__panel">
+    <input
+      type="text"
+      class="filter-select__search"
+      placeholder="Buscar…"
+      [value]="busqueda()"
+      (input)="onBusquedaInput($any($event.target).value)"
+      (click)="$event.stopPropagation()"
+      autofocus
+    />
+    <ul class="filter-select__options">
       <li
         class="filter-select__option"
-        [class.filter-select__option--selected]="selectedId() === option.id"
-        (click)="select(option.id)"
+        [class.filter-select__option--selected]="selectedId() === null"
+        (click)="select(null)"
       >
-        {{ option.nombre }}
+        {{ placeholder }}
       </li>
-    }
-  </ul>
+      @for (option of opcionesFiltradas(); track option.id) {
+        <li
+          class="filter-select__option"
+          [class.filter-select__option--selected]="selectedId() === option.id"
+          (click)="select(option.id)"
+        >
+          {{ option.nombre }}
+        </li>
+      }
+      @if (!opcionesFiltradas().length) {
+        <li class="filter-select__empty">Sin resultados</li>
+      }
+    </ul>
+  </div>
 }
